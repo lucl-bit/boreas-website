@@ -42,6 +42,7 @@ dd .pdz-logo { height: 20px; margin-right: .5em; }
   --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --max: 1280px;
+  --head-h: 96px; --head-h-s: 68px;
   --gutter: clamp(16px, 4vw, 40px);
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px; --s16: 128px;
   --ease: cubic-bezier(.2,.82,.24,1);
@@ -73,13 +74,14 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 .site-header {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
   display: grid; grid-template-columns: 1fr minmax(140px, 190px) 1fr; align-items: center; column-gap: var(--s3);
-  min-height: 96px; padding-inline: var(--gutter);
+  min-height: var(--head-h); padding-inline: var(--gutter);
   color: var(--top-ink); background: var(--top-bg); border-bottom: 1px solid var(--top-rule);
-  transition: min-height .25s var(--ease), background-color .25s var(--ease);
+  transition: min-height .25s var(--ease), margin-bottom .25s var(--ease), background-color .25s var(--ease);
 }
-.site-header.is-scrolled { min-height: 68px; background: var(--top-glass); backdrop-filter: blur(12px); }
+/* shrinks visually; the margin keeps its footprint, so the page below never jumps */
+.site-header.is-scrolled { min-height: var(--head-h-s); margin-bottom: calc(var(--head-h) - var(--head-h-s)); background: var(--top-glass); backdrop-filter: blur(12px); }
 .brand { justify-self: center; display: block; width: 100%; color: var(--top-ink); }
-.brand svg { width: 100%; height: auto; }
+.brand svg { display: block; width: 100%; height: auto; }
 .nav-side { display: flex; gap: clamp(16px, 2.6vw, 44px); align-items: center; }
 .nav-right { justify-content: flex-end; }
 .nav-side a, .menu-toggle {
@@ -101,8 +103,8 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
   font-weight: 300; font-size: clamp(28px, 8vw, 44px); border-bottom: 1px solid var(--top-rule);
 }
 @media (max-width: 900px) {
-  .site-header { grid-template-columns: 1fr auto; min-height: 76px; }
-  .site-header.is-scrolled { min-height: 64px; }
+  :root { --head-h: 76px; --head-h-s: 64px; }
+  .site-header { grid-template-columns: 1fr auto; }
   .brand { justify-self: start; width: 132px; }
   .nav-side { display: none; }
   .menu-toggle { display: block; }
@@ -129,10 +131,18 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
   background-size: 256px 256px, 256px 256px, 32px 32px, 32px 32px, 100% 100%;
   background-position: center -1px, center -1px, center -1px, center -1px, 0 0;
 }
-.hero .wrap { padding-block: var(--s8) var(--s12); display: grid; gap: var(--s6); }
+.hero .wrap { padding-block: 0 var(--s12); display: grid; gap: var(--s6); }
+/* first screen: labels, wordmark and the whole animation fit below the header */
+.hero-stage {
+  position: relative; display: flex; flex-direction: column; justify-content: space-evenly; gap: clamp(16px, 4svh, 48px);
+  height: calc(100svh - var(--head-h) - env(safe-area-inset-top, 0px)); min-height: 440px;
+  padding-block: clamp(16px, 4svh, 56px) clamp(40px, 6svh, 64px);
+}
+.hero-stage > * { flex: none; }
 .hero-top { display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; }
 .wordmark { color: var(--top-ink); width: 100%; height: auto; }
 .diagram { width: 100%; height: auto; overflow: visible; color: var(--top-ink); }
+.hero-stage .diagram { flex: 0 1 auto; min-height: 0; } /* shrinks on short screens, letterboxed by the viewBox */
 .diagram .cap { fill: var(--top-bg); }
 .diagram text { font-family: var(--f-mono); fill: currentColor; }
 .hero-copy { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); align-items: end; }
@@ -151,14 +161,14 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 .btn.ghost:hover { background: var(--fg); color: var(--bg); }
 @media (max-width: 900px) { .hero-copy h1, .hero-copy .side { grid-column: 1 / -1; } }
 .replay {
-  justify-self: end; margin-top: calc(-1 * var(--s4)); background: none; cursor: pointer;
+  position: absolute; right: 0; bottom: clamp(4px, 1.5svh, 16px); background: none; cursor: pointer;
   font: 400 12px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
   border: 1px solid var(--rule); padding: 10px 14px; transition: color 150ms ease-out, border-color 150ms ease-out;
 }
 .replay:hover { color: var(--fg); border-color: var(--fg); }
 
 /* Wordmark flight: the big hero wordmark shrinks and travels into the header while scrolling */
-.wm-slot { aspect-ratio: 489 / 56; }
+.wm-slot { aspect-ratio: 489 / 56; width: min(100%, 17svh * 489 / 56); margin-inline: auto; }
 .wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; backface-visibility: hidden; color: var(--top-ink); }
 .wm-fly .wordmark { display: block; width: 100%; height: auto; }
 .wm-flying .site-header .brand svg { opacity: 0; }
@@ -263,7 +273,8 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 .f-top dd a:hover { border-color: var(--fg); }
 .f-bot { display: flex; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: var(--s3); font-size: 14px; color: var(--mute); }
 @media (max-width: 900px) { .f-top .wm, .f-top dl { grid-column: 1 / -1; } }
-@media (max-width: 520px) { section > .wrap { padding-block: var(--s12); } .hero .wrap { padding-block: var(--s6) var(--s8); } }
+@media (max-width: 520px) { section > .wrap { padding-block: var(--s12); } .hero .wrap { padding-block: 0 var(--s8); } }
+@media (max-width: 900px) and (orientation: portrait) { .hero-stage { height: auto; min-height: 0; justify-content: flex-start; } }
 
 /* Scroll reveal: elements are tagged by script, so without script everything stays visible */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
@@ -310,6 +321,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 
 <header class="hero s-deep" id="top">
   <div class="wrap">
+    <div class="hero-stage">
     <div class="hero-top">
       <span class="label hero-eth"><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg><span>Focus Project 2026/27</span></span>
       <span class="label hero-eth"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><span>Product Development Group Zurich</span></span>
@@ -329,7 +341,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">RANGE</text>
             <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">HIGH</text>
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
-            <path d="M135.0 619v5M173.5 619v5M212.0 619v5M250.5 619v5M289.0 619v5M327.5 619v5M366.0 619v5M404.5 619v5M443.0 619v5M481.5 619v5M520.0 619v5" stroke-width="1" opacity=".28"/>
+            <path d="M135.0 7v5M173.5 7v5M212.0 7v5M250.5 7v5M289.0 7v5M327.5 7v5M366.0 7v5M404.5 7v5M443.0 7v5M481.5 7v5M520.0 7v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="381.4" stroke-width="1.6" opacity=".9"/>
             <rect class="cap" x="376.9" y="-4.5" width="9" height="9" transform="rotate(45 381.4 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
@@ -338,7 +350,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">SPEED</text>
             <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">HIGH</text>
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
-            <path d="M135.0 707v5M173.5 707v5M212.0 707v5M250.5 707v5M289.0 707v5M327.5 707v5M366.0 707v5M404.5 707v5M443.0 707v5M481.5 707v5M520.0 707v5" stroke-width="1" opacity=".28"/>
+            <path d="M135.0 7v5M173.5 7v5M212.0 7v5M250.5 7v5M289.0 7v5M327.5 7v5M366.0 7v5M404.5 7v5M443.0 7v5M481.5 7v5M520.0 7v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="450.7" stroke-width="1.6" opacity=".9"/>
             <rect class="cap" x="446.2" y="-4.5" width="9" height="9" transform="rotate(45 450.7 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
@@ -347,7 +359,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">INTERCEPTION TIME</text>
             <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">SHORT</text>
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
-            <path d="M135.0 795v5M173.5 795v5M212.0 795v5M250.5 795v5M289.0 795v5M327.5 795v5M366.0 795v5M404.5 795v5M443.0 795v5M481.5 795v5M520.0 795v5" stroke-width="1" opacity=".28"/>
+            <path d="M135.0 7v5M173.5 7v5M212.0 7v5M250.5 7v5M289.0 7v5M327.5 7v5M366.0 7v5M404.5 7v5M443.0 7v5M481.5 7v5M520.0 7v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="281.3" stroke-width="1.6" opacity=".9"/>
             <rect class="cap" x="276.8" y="-4.5" width="9" height="9" transform="rotate(45 281.3 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
@@ -356,7 +368,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">COST</text>
             <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">MEDIUM</text>
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
-            <path d="M135.0 883v5M173.5 883v5M212.0 883v5M250.5 883v5M289.0 883v5M327.5 883v5M366.0 883v5M404.5 883v5M443.0 883v5M481.5 883v5M520.0 883v5" stroke-width="1" opacity=".28"/>
+            <path d="M135.0 7v5M173.5 7v5M212.0 7v5M250.5 7v5M289.0 7v5M327.5 7v5M366.0 7v5M404.5 7v5M443.0 7v5M481.5 7v5M520.0 7v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="335.2" stroke-width="1.6" opacity=".9"/>
             <rect class="cap" x="330.7" y="-4.5" width="9" height="9" transform="rotate(45 335.2 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
@@ -398,6 +410,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
       </g>
     </svg>
     <button id="replay" class="replay" type="button" hidden>Replay intro ↻</button>
+    </div>
     <div class="hero-copy">
       <h1>Interceptor drones, <span>designed to requirement.</span></h1>
       <div class="side">
@@ -413,42 +426,33 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 
 <script>
 /* Wordmark flight: #wm lives in a fixed layer; its slot in the hero keeps the layout.
-   The scroll position only sets a target progress; the logo follows it through a damped
-   spring in its own rAF loop, so wheel steps and the header's height change never make it jump. */
+   Progress is tied directly to the scroll position: the logo starts out moving with the page
+   and decelerates into the header brand (ease-out), so it reacts at once and lands exactly. */
 (function () {
   var wm = document.getElementById('wm'), slot = document.getElementById('wm-slot'), brand = document.querySelector('.site-header .brand svg');
   if (!wm || !slot || !brand) return;
   var fly = document.createElement('div'); fly.className = 'wm-fly'; fly.setAttribute('aria-hidden', 'true');
   document.body.appendChild(fly); fly.appendChild(wm);
   document.documentElement.classList.add('wm-flying');
-  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  var x0 = 0, y0 = 0, w0 = 1, dist = 1, p = -1, raf = 0, last = 0, lastKey = '';
+  function ease(t) { return 1 - (1 - t) * (1 - t); } // starts at page speed (dist = 2 x travel), lands at rest
+  var x0 = 0, y0 = 0, w0 = 1, dist = 1, raf = 0, lastKey = '';
   function measure() { // slot position at scroll 0 (document coordinates)
     var s = slot.getBoundingClientRect(), b = brand.getBoundingClientRect();
     x0 = s.left; y0 = s.top + scrollY; w0 = Math.max(1, s.width);
-    dist = Math.max(1, y0 - b.top, innerHeight * .5); // at least half a screen of scrolling
+    dist = Math.max(120, 2 * (y0 - b.top));
     fly.style.width = w0 + 'px';
   }
-  function target() { return Math.min(1, Math.max(0, scrollY / dist)); }
   function place() {
-    var b = brand.getBoundingClientRect(), e = ease(p);
+    var b = brand.getBoundingClientRect(), e = ease(Math.min(1, Math.max(0, scrollY / dist)));
     var x = x0 + (b.left - x0) * e, y = y0 + (b.top - y0) * e, k = 1 + (b.width / w0 - 1) * e;
     var key = x.toFixed(2) + ',' + y.toFixed(2) + ',' + k.toFixed(4);
-    if (key !== lastKey) { lastKey = key; fly.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) scale(' + k.toFixed(4) + ')'; }
-    return key;
+    if (key !== lastKey) { lastKey = key; fly.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) scale(' + k.toFixed(4) + ')'; return true; }
+    return false;
   }
-  function tick(now) {
-    raf = 0;
-    var dt = Math.min(64, now - (last || now)); last = now;
-    var P = target(), d = P - p;
-    p = Math.abs(d) < 1e-4 ? P : p + d * (1 - Math.exp(-dt / 110)); // ~110 ms time constant
-    var before = lastKey;
-    place();
-    if (p !== P || lastKey !== before) raf = requestAnimationFrame(tick); else last = 0; // keep going while moving (incl. header transition)
-  }
+  function tick() { raf = 0; if (place()) kick(); } // keep going while anything moves (incl. the header's height transition)
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
-  function relayout() { measure(); if (p < 0) p = target(); place(); kick(); }
-  addEventListener('scroll', kick, { passive: true });
+  function relayout() { measure(); place(); kick(); }
+  addEventListener('scroll', function () { place(); kick(); }, { passive: true });
   addEventListener('resize', relayout);
   if (window.ResizeObserver) new ResizeObserver(relayout).observe(slot);
   if (document.fonts) document.fonts.ready.then(relayout);

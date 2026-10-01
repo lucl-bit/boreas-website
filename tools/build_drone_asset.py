@@ -24,7 +24,26 @@ winners = (wings & cyl).solids(); nacs = (wings - cyl).solids()
 
 def ang(s):
     bb = s.bounding_box(); return math.degrees(math.atan2(bb.center().Y-CY, bb.center().X-CX)) % 360
-parts = [("nose", nose, NOSE_SHIFT), ("sensor", sensor, NOSE_SHIFT), ("fuselage", fus, 0), ("tail", tail, 0)]
+# --- internal components: simplified placeholders (not in the shell STEP) -------------------
+# FC board lies along the axis (board plane = x/z), mount plate below it, battery pack in the
+# tail tube. Replace with real geometry (e.g. import_step of the mount) when available.
+def at(zc): return Pos(CX, CY, zc)
+FC_Z, BAT_Z = Z0 + 22, Z0 - 42
+fc_mount = at(FC_Z) * Pos(0, -9, 0) * Box(34, 2.4, 40)                     # base plate
+for sx in (-15.25, 15.25):
+    for sz in (-15.25, 15.25):
+        fc_mount += at(FC_Z) * Pos(sx, -4.2, sz) * Rot(90, 0, 0) * Cylinder(1.8, 7.2)   # standoffs (30.5 pattern)
+for sz in (-18.5, 18.5):                                                      # clamp rings against the wall
+    ring = at(FC_Z + sz) * (Cylinder(26.5, 3) - Cylinder(24.0, 3))
+    fc_mount += ring & (at(FC_Z + sz) * Pos(0, -14, 0) * Box(60, 28, 3))
+fc = at(FC_Z) * Pos(0, 0.6, 0) * Box(30, 5.6, 30)                            # flight controller block
+fc = fc.fillet(0.8, fc.edges().filter_by(Axis.Y))
+bat = at(BAT_Z) * Box(23, 23, 64)
+bat = bat.fillet(2.5, bat.edges().filter_by(Axis.Z))
+bat += at(BAT_Z + 32) * Pos(6, 6, 6) * Cylinder(1.4, 12)                      # lead
+
+parts = [("nose", nose, NOSE_SHIFT), ("fuselage", fus, 0), ("tail", tail, 0),
+         ("fcmount", fc_mount, 0), ("fc", fc, 0), ("battery", bat, 0)]
 for s in sorted(winners, key=ang): parts.append(("wing%d" % (round(ang(s)) // 90), s, 0))
 for s in sorted(nacs, key=ang): parts.append(("nacelle%d" % (round(ang(s)) // 90), s, 0))
 

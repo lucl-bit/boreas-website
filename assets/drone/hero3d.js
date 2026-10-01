@@ -12,6 +12,7 @@ import * as THREE from 'three';
 const svg = document.getElementById('dg'), hero = svg && svg.closest('.hero'), wm = document.getElementById('wm');
 const NS = 'http://www.w3.org/2000/svg', D2R = Math.PI / 180;
 const BASE = new URL('.', import.meta.url);
+const VER = new URL(import.meta.url).search; // ?v=… from index.html, so data and code are always cached as one set
 const intro = svg && svg.getAttribute('data-intro') === 'on' && !matchMedia('(prefers-reduced-motion: reduce)').matches;
 function el(name, attrs, parent) { const n = document.createElementNS(NS, name); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
 
@@ -81,8 +82,8 @@ function fallback() { // static drawing from the old PNG if WebGL / assets are u
 async function boot() {
   /* ---------- assets ---------- */
   const [man, buf] = await Promise.all([
-    fetch(new URL('drone.json', BASE)).then(r => r.json()),
-    fetch(new URL('drone.bin', BASE)).then(r => r.arrayBuffer())
+    fetch(new URL('drone.json' + VER, BASE)).then(r => r.json()),
+    fetch(new URL('drone.bin' + VER, BASE)).then(r => r.arrayBuffer())
   ]);
   const canvas = document.createElement('canvas');
   canvas.className = 'drone3d'; canvas.setAttribute('aria-hidden', 'true');
@@ -271,7 +272,11 @@ async function boot() {
   let raf = 0, iv = 0, t0 = 0, last = 0, running = false, started = false, tNow = intro ? 0 : END;
   const now = () => performance.now();
   function stop() { running = false; cancelAnimationFrame(raf); clearInterval(iv); }
-  function step() { const t = now() - t0; last = now(); tNow = Math.min(t, END); render(tNow); if (t >= END) stop(); }
+  function step() {
+    const t = now() - t0; last = now(); tNow = Math.min(t, END);
+    try { render(tNow); } catch (err) { console.warn('[boreas] frame failed, jumping to the final drawing', err); stop(); try { render(END); } catch (e) {} return; }
+    if (t >= END) stop();
+  }
   function frame() { if (!running) return; step(); if (running) raf = requestAnimationFrame(frame); }
   function play() {
     stop(); started = running = true; t0 = last = now(); tNow = 0; render(0);

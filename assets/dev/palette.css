@@ -1,0 +1,86 @@
+/* TEMPORARY palette tool, styles.
+   Part 1 re-colours the page through html[data-hero | data-blocks | data-base] (set by palette.js).
+   Part 2 styles the tool itself. Without this file the site renders in its original look. */
+
+/* ---------- 1. Variants ---------- */
+:root { --uni: #fff; }
+html[data-base="white"] { --uni: #ffffff; }
+html[data-base="paper"] { --uni: var(--paper); }
+html[data-base="beige"] { --uni: var(--beige); }
+
+/* hero: flat blue / white drop the blueprint grid and the glow */
+html[data-hero="blue"] .hero,
+html[data-hero="white"] .hero { background-image: none; }
+
+/* hero: white. Header, hero and the 3D drawing switch to navy ink on white */
+html[data-hero="white"] {
+  --top-bg: #fff; --top-ink: var(--navy);
+  --top-rule: rgba(23,43,70,.22); --top-glass: rgba(255,255,255,.94);
+}
+html[data-hero="white"] header.hero {
+  --bg: #fff; --fg: var(--navy); --body: #33465f; --mute: #546171; --rule: rgba(23,43,70,.22); --soft: rgba(23,43,70,.06);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* sections: one uniform background instead of the colour blocks (header + hero stay as chosen above) */
+html[data-blocks="uniform"] main section,
+html[data-blocks="uniform"] footer {
+  --bg: var(--uni); --fg: var(--navy); --body: #33465f; --mute: #546171; --rule: rgba(23,43,70,.22); --soft: rgba(23,43,70,.06);
+}
+html[data-blocks="uniform"] body { background: var(--uni); }
+
+/* ---------- 2. The tool ---------- */
+.dev-toggle {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; background: none; color: inherit;
+  font: 400 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase;
+  border: 1px dashed currentColor; padding: 8px 10px; opacity: .8;
+  transition: opacity 150ms ease-out, background-color 150ms ease-out;
+}
+.dev-toggle:hover, .dev-toggle[aria-expanded="true"] { opacity: 1; }
+.dev-toggle[aria-expanded="true"] { background: color-mix(in srgb, currentColor 12%, transparent); }
+.dev-toggle svg { width: 12px; height: 12px; flex: none; }
+.nav-right .dev-toggle { margin-left: calc(-1 * clamp(0px, .6vw, 12px)); }
+.dev-toggle.dev-mobile { display: none; justify-self: end; }
+@media (max-width: 900px) {
+  .site-header.has-dev { grid-template-columns: 1fr auto auto; }
+  .dev-toggle.dev-mobile { display: inline-flex; }
+}
+
+.dev-panel {
+  position: fixed; z-index: 40; right: var(--gutter); top: 104px; width: min(340px, calc(100vw - 2 * var(--gutter)));
+  max-height: calc(100vh - 128px); overflow: auto;
+  background: #fff; color: #172b46; border: 1px solid #172b46; box-shadow: 0 18px 48px rgba(13,28,46,.28);
+  font: 400 14px/1.4 var(--f-display); text-transform: none; letter-spacing: 0;
+}
+.dev-panel[hidden] { display: none !important; }
+.dev-panel * { box-sizing: border-box; }
+.dev-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-bottom: 1px solid rgba(23,43,70,.22); background: #f2ede3; }
+.dev-head b { font: 500 12px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; }
+.dev-head small { display: block; margin-top: 4px; font: 400 10px/1.2 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #546171; }
+.dev-close {
+  cursor: pointer; background: #172b46; color: #f2ede3; border: 1px solid #172b46; padding: 8px 10px; white-space: nowrap;
+  font: 500 11px/1 var(--f-display); letter-spacing: .12em; text-transform: uppercase;
+}
+.dev-close:hover { background: transparent; color: #172b46; }
+.dev-body { display: grid; gap: 16px; padding: 14px; }
+.dev-group { display: grid; gap: 8px; border: 0; margin: 0; padding: 0; min-width: 0; }
+.dev-group > legend { padding: 0; margin-bottom: 8px; font: 400 11px/1.2 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: #546171; }
+.dev-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid #172b46; }
+.dev-seg button, .dev-presets button {
+  cursor: pointer; background: #fff; color: #172b46; border: 0; padding: 10px 6px; min-height: 40px;
+  font: 400 13px/1.2 var(--f-display); transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+.dev-seg button + button { border-left: 1px solid #172b46; }
+.dev-seg button:hover, .dev-presets button:hover { background: #f2ede3; }
+.dev-seg button[aria-pressed="true"] { background: #172b46; color: #fff; }
+.dev-seg.swatches button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.dev-seg.swatches i { width: 14px; height: 14px; border: 1px solid #172b46; flex: none; }
+.dev-group[data-off] .dev-seg { opacity: .4; pointer-events: none; }
+.dev-hint { font-size: 12px; color: #546171; }
+.dev-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dev-presets button { border: 1px solid #172b46; }
+.dev-note { padding: 10px 14px; border-top: 1px solid rgba(23,43,70,.22); font: 400 10px/1.5 var(--f-mono); letter-spacing: .06em; color: #546171; }
+.dev-panel button:focus-visible, .dev-toggle:focus-visible { outline: 2px solid #3c6eaa; outline-offset: 2px; }
+@media (max-width: 900px) {
+  .dev-panel { left: var(--gutter); right: var(--gutter); width: auto; }
+}

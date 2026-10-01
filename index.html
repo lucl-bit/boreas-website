@@ -24,6 +24,12 @@ dd .pdz-logo { height: 20px; margin-right: .5em; }
   --beige: #f2ede3;
   --paper: #f8f7f3;
 
+  /* top zone (header + hero): ink on background, switched by the palette tool */
+  --top-bg: var(--deep);
+  --top-ink: var(--beige);
+  --top-rule: rgba(242,237,227,.28);
+  --top-glass: rgba(13,28,46,.94);
+
   /* per-block context, overridden by .s-* classes */
   --bg: var(--paper);
   --fg: var(--navy);
@@ -68,16 +74,16 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
   display: grid; grid-template-columns: 1fr minmax(140px, 190px) 1fr; align-items: center; column-gap: var(--s3);
   min-height: 96px; padding-inline: var(--gutter);
-  color: var(--beige); background: var(--deep); border-bottom: 1px solid rgba(242,237,227,.28);
+  color: var(--top-ink); background: var(--top-bg); border-bottom: 1px solid var(--top-rule);
   transition: min-height .25s var(--ease), background-color .25s var(--ease);
 }
-.site-header.is-scrolled { min-height: 68px; background: rgba(13,28,46,.94); backdrop-filter: blur(12px); }
-.brand { justify-self: center; display: block; width: 100%; color: var(--beige); }
+.site-header.is-scrolled { min-height: 68px; background: var(--top-glass); backdrop-filter: blur(12px); }
+.brand { justify-self: center; display: block; width: 100%; color: var(--top-ink); }
 .brand svg { width: 100%; height: auto; }
 .nav-side { display: flex; gap: clamp(16px, 2.6vw, 44px); align-items: center; }
 .nav-right { justify-content: flex-end; }
 .nav-side a, .menu-toggle {
-  position: relative; font: 500 12px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--beige); padding-block: 8px;
+  position: relative; font: 500 12px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--top-ink); padding-block: 8px;
 }
 .nav-side a::after {
   content: ""; position: absolute; inset: auto 0 0; height: 1px; background: currentColor;
@@ -87,12 +93,12 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 .menu-toggle { display: none; justify-self: end; background: none; border: 0; cursor: pointer; }
 .mobile-nav {
   position: fixed; inset: 0; z-index: 15; display: none; flex-direction: column; overflow-y: auto;
-  padding: 112px var(--gutter) 32px; background: var(--deep); color: var(--beige);
+  padding: 112px var(--gutter) 32px; background: var(--top-bg); color: var(--top-ink);
 }
 .mobile-nav.is-open { display: flex; }
 .mobile-nav a {
   display: flex; align-items: center; min-height: 60px; text-decoration: none; text-transform: uppercase;
-  font-weight: 300; font-size: clamp(28px, 8vw, 44px); border-bottom: 1px solid rgba(242,237,227,.28);
+  font-weight: 300; font-size: clamp(28px, 8vw, 44px); border-bottom: 1px solid var(--top-rule);
 }
 @media (max-width: 900px) {
   .site-header { grid-template-columns: 1fr auto; min-height: 76px; }
@@ -125,8 +131,9 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 }
 .hero .wrap { padding-block: var(--s8) var(--s12); display: grid; gap: var(--s6); }
 .hero-top { display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; }
-.wordmark { color: var(--beige); width: 100%; height: auto; }
-.diagram { width: 100%; height: auto; overflow: visible; color: var(--beige); }
+.wordmark { color: var(--top-ink); width: 100%; height: auto; }
+.diagram { width: 100%; height: auto; overflow: visible; color: var(--top-ink); }
+.diagram .cap { fill: var(--top-bg); }
 .diagram text { font-family: var(--f-mono); fill: currentColor; }
 .hero-copy { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); align-items: end; }
 .hero-copy h1 { grid-column: 1 / span 7; font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; letter-spacing: -.02em; }
@@ -152,7 +159,7 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 
 /* Wordmark flight: the big hero wordmark shrinks and travels into the header while scrolling */
 .wm-slot { aspect-ratio: 489 / 56; }
-.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; backface-visibility: hidden; color: var(--beige); }
+.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; backface-visibility: hidden; color: var(--top-ink); }
 .wm-fly .wordmark { display: block; width: 100%; height: auto; }
 .wm-flying .site-header .brand svg { opacity: 0; }
 body:has(.mobile-nav.is-open) .wm-fly { opacity: 0; }
@@ -245,16 +252,16 @@ details.guides[open] summary::after { content: "\2013"; }
 @media (max-width: 900px) { .partner h2, .partner .side { grid-column: 1 / -1; } }
 
 /* Footer */
-footer { background: var(--deep); color: rgba(242,237,227,.8); border-top: 1px solid rgba(242,237,227,.28); }
+footer { background: var(--bg); color: var(--body); border-top: 1px solid var(--rule); }
 footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8); }
 .f-top { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); }
-.f-top .wm { grid-column: 1 / span 6; color: var(--beige); width: 100%; max-width: 420px; height: auto; }
+.f-top .wm { grid-column: 1 / span 6; color: var(--fg); width: 100%; max-width: 420px; height: auto; }
 .f-top dl { grid-column: 8 / span 5; margin: 0; display: grid; grid-template-columns: auto 1fr; gap: var(--s1) var(--s4); min-width: 0; }
-.f-top dt { font: 400 12px/1.9 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(242,237,227,.62); }
-.f-top dd { margin: 0; color: var(--beige); user-select: all; overflow-wrap: anywhere; }
-.f-top dd a { text-decoration: none; border-bottom: 1px solid rgba(242,237,227,.4); }
-.f-top dd a:hover { border-color: var(--beige); }
-.f-bot { display: flex; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; border-top: 1px solid rgba(242,237,227,.2); padding-top: var(--s3); font-size: 14px; color: rgba(242,237,227,.62); }
+.f-top dt { font: 400 12px/1.9 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.f-top dd { margin: 0; color: var(--fg); user-select: all; overflow-wrap: anywhere; }
+.f-top dd a { text-decoration: none; border-bottom: 1px solid var(--rule); }
+.f-top dd a:hover { border-color: var(--fg); }
+.f-bot { display: flex; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; border-top: 1px solid var(--rule); padding-top: var(--s3); font-size: 14px; color: var(--mute); }
 @media (max-width: 900px) { .f-top .wm, .f-top dl { grid-column: 1 / -1; } }
 @media (max-width: 520px) { section > .wrap { padding-block: var(--s12); } .hero .wrap { padding-block: var(--s6) var(--s8); } }
 
@@ -263,7 +270,9 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 .reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 </style>
-
+<!-- TEMPORARY palette tool: delete these two lines and assets/dev/ to remove it -->
+<link rel="stylesheet" href="assets/dev/palette.css?v=1">
+<script src="assets/dev/palette.js?v=1"></script>
 
 <header class="site-header" id="site-header">
   <nav class="nav-side nav-left" aria-label="Main left">
@@ -322,7 +331,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
             <path d="M135.0 619v5M173.5 619v5M212.0 619v5M250.5 619v5M289.0 619v5M327.5 619v5M366.0 619v5M404.5 619v5M443.0 619v5M481.5 619v5M520.0 619v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="381.4" stroke-width="1.6" opacity=".9"/>
-            <rect x="376.9" y="-4.5" width="9" height="9" transform="rotate(45 381.4 0)" fill="#0d1c2e" stroke-width="1.6"/>
+            <rect class="cap" x="376.9" y="-4.5" width="9" height="9" transform="rotate(45 381.4 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
           </g>
           <g class="param" transform="translate(0 700)">
@@ -331,7 +340,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
             <path d="M135.0 707v5M173.5 707v5M212.0 707v5M250.5 707v5M289.0 707v5M327.5 707v5M366.0 707v5M404.5 707v5M443.0 707v5M481.5 707v5M520.0 707v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="450.7" stroke-width="1.6" opacity=".9"/>
-            <rect x="446.2" y="-4.5" width="9" height="9" transform="rotate(45 450.7 0)" fill="#0d1c2e" stroke-width="1.6"/>
+            <rect class="cap" x="446.2" y="-4.5" width="9" height="9" transform="rotate(45 450.7 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
           </g>
           <g class="param" transform="translate(0 788)">
@@ -340,7 +349,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
             <path d="M135.0 795v5M173.5 795v5M212.0 795v5M250.5 795v5M289.0 795v5M327.5 795v5M366.0 795v5M404.5 795v5M443.0 795v5M481.5 795v5M520.0 795v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="281.3" stroke-width="1.6" opacity=".9"/>
-            <rect x="276.8" y="-4.5" width="9" height="9" transform="rotate(45 281.3 0)" fill="#0d1c2e" stroke-width="1.6"/>
+            <rect class="cap" x="276.8" y="-4.5" width="9" height="9" transform="rotate(45 281.3 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
           </g>
           <g class="param" transform="translate(0 876)">
@@ -349,7 +358,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
             <path d="M135.0 883v5M173.5 883v5M212.0 883v5M250.5 883v5M289.0 883v5M327.5 883v5M366.0 883v5M404.5 883v5M443.0 883v5M481.5 883v5M520.0 883v5" stroke-width="1" opacity=".28"/>
             <line x1="135" x2="335.2" stroke-width="1.6" opacity=".9"/>
-            <rect x="330.7" y="-4.5" width="9" height="9" transform="rotate(45 335.2 0)" fill="#0d1c2e" stroke-width="1.6"/>
+            <rect class="cap" x="330.7" y="-4.5" width="9" height="9" transform="rotate(45 335.2 0)" stroke-width="1.6"/>
             <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
           </g>
           <g stroke-width="1.2" opacity=".5">
@@ -358,11 +367,11 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
             <path d="M552 788 C 606 788, 592 755, 650 755"/>
             <path d="M552 876 C 606 876, 592 781, 650 781"/>
           </g>
-          <rect x="650" y="625" width="240" height="240" fill="#0d1c2e" stroke-width="1.2"/>
-          <circle cx="650" cy="703" r="3.5" fill="#0d1c2e" stroke-width="1.2"/>
-          <circle cx="650" cy="729" r="3.5" fill="#0d1c2e" stroke-width="1.2"/>
-          <circle cx="650" cy="755" r="3.5" fill="#0d1c2e" stroke-width="1.2"/>
-          <circle cx="650" cy="781" r="3.5" fill="#0d1c2e" stroke-width="1.2"/>
+          <rect class="cap" x="650" y="625" width="240" height="240" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="703" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="729" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="755" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="781" r="3.5" stroke-width="1.2"/>
           <text x="670" y="655" font-size="12" letter-spacing="4" opacity=".55" stroke="none">02 · PIPELINE</text>
           <text x="670" y="687" font-size="23" stroke="none" style="font-family: var(--f-display); font-weight: 300; letter-spacing: 0">Design automation</text>
           <line x1="650" x2="890" y1="705" y2="705" stroke-width="1" opacity=".28"/>
@@ -447,7 +456,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 })();
 </script>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
-<script type="module" src="assets/drone/hero3d.js?v=4"></script>
+<script type="module" src="assets/drone/hero3d.js?v=5"></script>
 <script>
 /* if the 3D module cannot load (offline CDN, no WebGL), fall back to the static PNG drawing */
 setTimeout(function () {

@@ -152,13 +152,10 @@ async function boot() {
   const fig = el('text', { x: 980, y: 505, 'font-size': 24, 'font-style': 'italic', 'letter-spacing': 4, stroke: 'none', opacity: 0 }, callG);
   fig.textContent = 'Fig. 1';
 
-  /* ---------- input panel ---------- */
-  const sliders = [...svg.querySelectorAll('.slider')].map(s => ({ x: +s.dataset.x, via: +(s.dataset.via || 0), label: s.querySelector('text'), bg: s.querySelector('.bg'),
-    ticks: s.querySelector('.ticks'), fill: s.querySelector('.fill'), knob: s.querySelector('.knob'), ghost: s.querySelector('.ghost'), arrow: s.querySelector('.arrow') }));
-  const types = [...svg.querySelectorAll('.type')].map(t => ({ el: t, full: t.textContent }));
-  const wireOut = svg.querySelector('.wire-out'), wireClip = svg.querySelector('.wire-clip'), node = svg.querySelector('.node'), orbit = svg.querySelector('.node-orbit');
+  /* ---------- input panel + pipeline: static markup; only the link to the drone is computed ---------- */
+  const panel = svg.querySelector('.panel'), wireOut = svg.querySelector('.wire-out'), wireEnd = svg.querySelector('.wire-end');
+  const OUT = [894, 745]; // pipeline output port (SVG units)
   const letters = wm ? [...wm.querySelectorAll('path')] : [];
-  const typeAt = (o, p) => { o.el.textContent = o.full.slice(0, Math.round(o.full.length * p)); };
   const draw = (n, k) => n.setAttribute('stroke-dashoffset', (1 - k).toFixed(3));
 
   /* ---------- geometry helpers: SVG units <-> canvas pixels ---------- */
@@ -259,38 +256,15 @@ async function boot() {
     });
     fig.setAttribute('opacity', (.85 * seg(t, 3800, 600)).toFixed(2));
 
-    // input panel and pipeline (builds while the callouts draw)
-    const T = 3500;
-    typeAt(types[0], seg(t, T, 600));
-    sliders.forEach((sl, i) => {
-      const d0 = T + 50 + i * 110, span = sl.x - 133;
-      sl.label.setAttribute('opacity', seg(t, d0, 300).toFixed(2));
-      sl.bg.setAttribute('x2', (133 + 472 * eIO(seg(t, d0, 500))).toFixed(1));
-      if (sl.ticks) sl.ticks.setAttribute('opacity', (.35 * seg(t, d0 + 250, 300)).toFixed(2));
-      const start = d0 + 400; let pos;
-      if (sl.via) {
-        const p1 = eIO(seg(t, start, 650)), p2 = eIO(seg(t, start + 850, 650));
-        pos = 133 + (sl.via - 133) * p1 + (sl.x - sl.via) * p2;
-        sl.ghost.setAttribute('opacity', (.5 * seg(t, start + 600, 200)).toFixed(2));
-        const ka = eOut(seg(t, start + 700, 350));
-        sl.arrow.setAttribute('opacity', (.6 * ka).toFixed(2));
-        sl.arrow.setAttribute('transform', 'translate(' + (-24 * (1 - ka)).toFixed(1) + ' 0)');
-      } else pos = 133 + span * eIO(seg(t, start, 900));
-      sl.fill.setAttribute('x2', pos.toFixed(1));
-      sl.knob.setAttribute('opacity', seg(t, start - 150, 150).toFixed(2));
-      sl.knob.setAttribute('transform', 'translate(' + (pos - sl.x).toFixed(1) + ' 0)');
-    });
-    wireOut.setAttribute('d', 'M781 792 L' + (tailTip[0] - 16).toFixed(1) + ' ' + tailTip[1].toFixed(1));
-    wireClip.setAttribute('width', Math.max(0, (tailTip[0] - 600) * eIO(seg(t, T + 1200, 700))).toFixed(1));
-    const nk = eOut(seg(t, T + 1500, 350));
-    node.setAttribute('opacity', nk.toFixed(2));
-    node.setAttribute('transform', 'translate(765 792) scale(' + (.4 + .6 * nk).toFixed(3) + ') translate(-765 -792)');
-    const ok = seg(t, T + 1550, 900);
-    orbit.setAttribute('opacity', (ok > 0 && ok < 1 ? .7 * Math.sin(ok * Math.PI) : 0).toFixed(2));
-    orbit.setAttribute('transform', 'rotate(' + (180 * eIO(ok)).toFixed(1) + ' 765 792)');
-    typeAt(types[1], seg(t, T + 1650, 400));
-    typeAt(types[2], seg(t, T + 1000, 300));
-    typeAt(types[3], seg(t, T + 1200, 700));
+    // panel stays still; it only fades in once the big drone has cleared the left side
+    if (panel) panel.setAttribute('opacity', eIO(seg(t, 2300, 1300)).toFixed(3));
+    // output link: soft S-curve from the pipeline's output port to the exhaust of the settled drone
+    const tx = tailTip[0] - 10, ty = tailTip[1], dx = Math.max(60, tx - OUT[0]);
+    wireOut.setAttribute('d', 'M' + OUT[0] + ' ' + OUT[1] + 'C' + (OUT[0] + dx * .5).toFixed(1) + ' ' + OUT[1] + ' ' + (tx - dx * .5).toFixed(1) + ' ' + ty.toFixed(1) + ' ' + tx.toFixed(1) + ' ' + ty.toFixed(1));
+    const kw = eIO(seg(t, 4300, 900));
+    wireOut.setAttribute('opacity', (.5 * kw).toFixed(3));
+    wireEnd.setAttribute('cx', tx.toFixed(1)); wireEnd.setAttribute('cy', ty.toFixed(1));
+    wireEnd.setAttribute('opacity', kw.toFixed(3));
   }
 
   /* ---------- playback ---------- */

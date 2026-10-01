@@ -44,13 +44,16 @@ const CAM = { t0: 450, dur: 4300 };
 // pose: c = centre in SVG units, k = SVG units per mm, tilt = screen angle of the axis,
 // yaw = axis turned towards/away from the viewer, pitch = view from above
 const POSE0 = { c: [1010, 735], k: 3.2, tilt: 5, yaw: -10, pitch: 14, roll: -38 };
-const POSE1 = { c: [1380, 705], k: 1.6, tilt: 16, yaw: -16, pitch: 20, roll: 0 };
+const POSE1 = { c: [1380, 705], k: 1.34, tilt: 16, yaw: -16, pitch: 20, roll: 0 };
 // per part: axial travel dz, radial travel dr, relative roll phi (+ transient swing), start, duration
 const MOVES = {
-  nose:     { dz: 100, dr: 0,  phi: -270, swing: 0,  t0: 650,  dur: 3300 },
-  sensor:   { dz: 26,  dr: 0,  phi: -180, swing: 0,  t0: 1150, dur: 3100 },
+  nose:     { dz: 175, dr: 0,  phi: -270, swing: 0,  t0: 650,  dur: 3300 },
+  // internals (placeholders): slide out of the opened fuselage along the axis into the gaps
+  fcmount:  { dz: 92,  dr: 0,  rdir: [0, 1], phi: 0, swing: 0, t0: 1500, dur: 3000 },
+  fc:       { dz: 146, dr: 12, rdir: [0, 1], phi: 0, swing: 0, t0: 1650, dur: 3000 },
+  battery:  { dz: -52, dr: 0,  rdir: [0, 1], phi: 0, swing: 0, t0: 1400, dur: 3100 },
   fuselage: { dz: 0,   dr: 0,  phi: 0,    swing: 0,  t0: 0,    dur: 1 },
-  tail:     { dz: -85,  dr: 0, phi: 180,  swing: 0,  t0: 850,  dur: 3300 },
+  tail:     { dz: -130, dr: 0, phi: 180,  swing: 0,  t0: 850,  dur: 3300 },
   wing:     { dz: 6,   dr: 22, phi: 0,    swing: 16, t0: 1350, dur: 3000 },
   nacelle:  { dz: 10,  dr: 46, phi: 0,    swing: 24, t0: 1550, dur: 3000 }
 };
@@ -58,10 +61,12 @@ const LINE = { edge: .92, grid: .34, edgeHidden: .1, gridHidden: .035 };
 
 /* patent-style reference numerals: anchor in part-local mm, label offset in SVG units */
 const CALLOUTS = [
-  { part: 'nose',     at: [0, 0, 140],     dx: 10,   dy: -105, n: '10', text: 'NOSE CONE' },
-  { part: 'sensor',   at: [0, 14, 152],    dx: 60,   dy: 175,  n: '12', text: 'SEEKER · SENSOR' },
-  { part: 'nacelle1', at: 'c',             dx: 75,   dy: -150, n: '14', text: 'NACELLE · MOTOR' },
-  { part: 'fuselage', at: [0, -34, 30],    dx: 20,   dy: 160,  n: '16', text: 'FUSELAGE · AVIONICS' },
+  { part: 'nose',     at: [0, 0, 140],     dx: 40,   dy: 115,  n: '10', text: 'NOSE CONE' },
+  { part: 'fc',       at: [0, 3.4, 22],    dx: 20,   dy: -150, n: '12', text: 'FLIGHT CONTROLLER' },
+  { part: 'fcmount',  at: [15, -9, 22],    dx: 70,   dy: 150,  n: '22', text: 'FC MOUNT' },
+  { part: 'battery',  at: [0, 11.5, -42],  dx: -80,  dy: -120, n: '24', text: 'BATTERY' },
+  { part: 'nacelle1', at: 'c',             dx: -40,  dy: -150, n: '14', text: 'NACELLE · MOTOR' },
+  { part: 'fuselage', at: [0, -34, 30],    dx: 20,   dy: 160,  n: '16', text: 'FUSELAGE' },
   { part: 'wing3',    at: 'c',             dx: -90,  dy: 120,  n: '18', text: 'WING' },
   { part: 'tail',     at: [0, 70, -60],    dx: -70,  dy: 90,   n: '20', text: 'TAIL · STABILISERS' }
 ];
@@ -120,7 +125,8 @@ async function boot() {
       const ls = new THREE.LineSegments(geo, mat); ls.renderOrder = o; ls.frustumCulled = false; shift.add(ls);
     });
     const kind = p.name.replace(/\d+$/, ''), a = Math.atan2(p.c[1], p.c[0]);
-    parts[p.name] = { twist, shift, p, mv: MOVES[kind], dir: [Math.cos(a), Math.sin(a)], swingSign: (+p.name.slice(-1) % 2 ? 1 : -1) };
+    const mv = MOVES[kind];
+    parts[p.name] = { twist, shift, p, mv, dir: mv.rdir || [Math.cos(a), Math.sin(a)], swingSign: (+p.name.slice(-1) % 2 ? 1 : -1) };
   }
 
   /* centre line: the roll axis, dash-dot, nose -> exhaust */

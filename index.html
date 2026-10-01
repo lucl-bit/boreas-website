@@ -1,0 +1,565 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Boreas</title>
+<meta name="description" content="Boreas – ETH Zürich Focus Project 2026/27. A digital design and manufacturing pipeline for tailored interceptor drones.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: centred-logo header over alternating colour blocks (deep, beige, paper, navy), blueprint hero, ethics ahead of team. Single brand theme by choice, palette from the Notion design manual. */
+:root {
+  --deep: #0d1c2e;
+  --navy: #172b46;
+  --beige: #f2ede3;
+  --paper: #f8f7f3;
+
+  /* per-block context, overridden by .s-* classes */
+  --bg: var(--paper);
+  --fg: var(--navy);
+  --body: #33465f;
+  --mute: #546171;
+  --rule: rgba(23,43,70,.22);
+  --soft: rgba(23,43,70,.06);
+
+  --f-display: "Outfit", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --max: 1280px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s6: 48px; --s8: 64px; --s12: 96px; --s16: 128px;
+  --ease: cubic-bezier(.2,.82,.24,1);
+  color-scheme: light;
+}
+.s-deep  { --bg: var(--deep);  --fg: var(--beige); --body: rgba(242,237,227,.84); --mute: rgba(242,237,227,.62); --rule: rgba(242,237,227,.28); --soft: rgba(242,237,227,.06); }
+.s-navy  { --bg: var(--navy);  --fg: var(--beige); --body: rgba(242,237,227,.84); --mute: rgba(242,237,227,.62); --rule: rgba(242,237,227,.28); --soft: rgba(242,237,227,.06); }
+.s-beige { --bg: var(--beige); --fg: var(--navy);  --body: #33465f; --mute: #546171; --rule: rgba(23,43,70,.24); --soft: rgba(23,43,70,.06); }
+.s-paper { --bg: var(--paper); --fg: var(--navy);  --body: #33465f; --mute: #546171; --rule: rgba(23,43,70,.22); --soft: rgba(23,43,70,.06); }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+body {
+  margin: 0; background: var(--deep); color: var(--body);
+  font: 400 17px/1.55 var(--f-display);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { color: var(--fg); font-weight: 300; text-wrap: balance; }
+section, header.hero { background-color: var(--bg); color: var(--body); }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
+.label { font: 400 12px/1.4 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+
+/* ---------- Header: centred logo, categories left and right ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: grid; grid-template-columns: 1fr minmax(140px, 190px) 1fr; align-items: center; column-gap: var(--s3);
+  min-height: 96px; padding-inline: var(--gutter);
+  color: var(--beige); background: var(--deep); border-bottom: 1px solid rgba(242,237,227,.28);
+  transition: min-height .25s var(--ease), background-color .25s var(--ease);
+}
+.site-header.is-scrolled { min-height: 68px; background: rgba(13,28,46,.94); backdrop-filter: blur(12px); }
+.brand { justify-self: center; display: block; width: 100%; color: var(--beige); }
+.brand svg { width: 100%; height: auto; }
+.nav-side { display: flex; gap: clamp(16px, 2.6vw, 44px); align-items: center; }
+.nav-right { justify-content: flex-end; }
+.nav-side a, .menu-toggle {
+  position: relative; font: 500 12px/1 var(--f-display); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--beige); padding-block: 8px;
+}
+.nav-side a::after {
+  content: ""; position: absolute; inset: auto 0 0; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform .2s var(--ease);
+}
+.nav-side a:hover::after, .nav-side a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+.menu-toggle { display: none; justify-self: end; background: none; border: 0; cursor: pointer; }
+.mobile-nav {
+  position: fixed; inset: 0; z-index: 15; display: none; flex-direction: column; overflow-y: auto;
+  padding: 112px var(--gutter) 32px; background: var(--deep); color: var(--beige);
+}
+.mobile-nav.is-open { display: flex; }
+.mobile-nav a {
+  display: flex; align-items: center; min-height: 60px; text-decoration: none; text-transform: uppercase;
+  font-weight: 300; font-size: clamp(28px, 8vw, 44px); border-bottom: 1px solid rgba(242,237,227,.28);
+}
+@media (max-width: 900px) {
+  .site-header { grid-template-columns: 1fr auto; min-height: 76px; }
+  .site-header.is-scrolled { min-height: 64px; }
+  .brand { justify-self: start; width: 132px; }
+  .nav-side { display: none; }
+  .menu-toggle { display: block; }
+}
+
+/* ---------- Hero ---------- */
+.hero { position: relative; overflow: hidden; }
+.hero > .wrap { position: relative; z-index: 1; }
+.drone3d { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0; }
+.hero {
+  background-image:
+    linear-gradient(rgba(242,237,227,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,237,227,.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center -1px;
+}
+.hero {
+  background-image:
+    linear-gradient(rgba(242,237,227,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,237,227,.10) 1px, transparent 1px),
+    linear-gradient(rgba(242,237,227,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242,237,227,.045) 1px, transparent 1px),
+    radial-gradient(ellipse at 70% 40%, rgba(60,110,170,.22), transparent 65%);
+  background-size: 256px 256px, 256px 256px, 32px 32px, 32px 32px, 100% 100%;
+  background-position: center -1px, center -1px, center -1px, center -1px, 0 0;
+}
+.hero .wrap { padding-block: var(--s8) var(--s12); display: grid; gap: var(--s6); }
+.hero-top { display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; }
+.wordmark { color: var(--beige); width: 100%; height: auto; }
+.diagram { width: 100%; height: auto; overflow: visible; color: var(--beige); }
+.diagram text { font-family: var(--f-mono); fill: currentColor; }
+.hero-copy { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); align-items: end; }
+.hero-copy h1 { grid-column: 1 / span 7; font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; letter-spacing: -.02em; }
+.hero-copy h1 span { color: var(--mute); }
+.hero-copy .side { grid-column: 9 / span 4; display: grid; gap: var(--s3); min-width: 0; }
+.btns { display: flex; gap: var(--s1); flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px;
+  font: 500 12px/1 var(--f-display); letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+  border: 1px solid var(--fg); background: var(--fg); color: var(--bg);
+  transition: background-color 180ms ease-out, color 180ms ease-out;
+}
+.btn:hover { background: transparent; color: var(--fg); }
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn.ghost:hover { background: var(--fg); color: var(--bg); }
+@media (max-width: 900px) { .hero-copy h1, .hero-copy .side { grid-column: 1 / -1; } }
+.replay {
+  justify-self: end; margin-top: calc(-1 * var(--s4)); background: none; cursor: pointer;
+  font: 400 12px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
+  border: 1px solid var(--rule); padding: 10px 14px; transition: color 150ms ease-out, border-color 150ms ease-out;
+}
+.replay:hover { color: var(--fg); border-color: var(--fg); }
+
+/* ---------- Sections ---------- */
+section > .wrap { padding-block: var(--s16); }
+.sec-head { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); margin-bottom: var(--s8); align-items: end; }
+.sec-head h2 { grid-column: 1 / span 7; font-size: clamp(36px, 5vw, 64px); line-height: 1.04; letter-spacing: -.02em; }
+.sec-head h2 span { display: block; color: var(--mute); }
+.sec-head .aside { grid-column: 9 / span 4; display: grid; gap: var(--s2); min-width: 0; }
+.sec-head .label { grid-column: 1 / -1; margin-bottom: var(--s1); }
+@media (max-width: 900px) { .sec-head h2, .sec-head .aside { grid-column: 1 / -1; } }
+.lead { font-size: 19px; line-height: 1.5; color: var(--body); max-width: 60ch; }
+
+/* Mission */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3) var(--s8); }
+.two article { border-top: 1px solid var(--fg); padding-top: var(--s3); display: grid; gap: var(--s2); align-content: start; min-width: 0; }
+.two h3 { font-size: 28px; font-weight: 400; }
+.two p { max-width: 54ch; }
+.two strong { color: var(--fg); font-weight: 500; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: var(--s12); border-top: 1px solid var(--rule); }
+.steps li { list-style: none; padding: var(--s4) var(--s4) 0 0; display: grid; gap: var(--s2); align-content: start; min-width: 0; }
+.steps li + li { padding-left: var(--s4); border-left: 1px solid var(--rule); }
+.steps ol { margin: 0; padding: 0; display: contents; }
+.steps h3 { font-size: 22px; font-weight: 400; }
+.steps .k { font-family: var(--f-mono); font-size: 13px; color: var(--mute); }
+@media (max-width: 900px) {
+  .two { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .steps li, .steps li + li { padding: var(--s3) 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+}
+
+/* People grids */
+.people { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s6) var(--s3); }
+.people.three { grid-template-columns: repeat(3, 1fr); }
+.person { display: grid; gap: var(--s2); align-content: start; min-width: 0; margin: 0; }
+.person img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 20%; background: var(--soft); border: 1px solid var(--rule); filter: saturate(.8) contrast(1.03); }
+.person h3 { font-size: 20px; font-weight: 400; line-height: 1.2; }
+.person .role { font-size: 15px; color: var(--fg); }
+.person .soft { font-size: 14px; color: var(--mute); }
+.person .bio { font-size: 15px; line-height: 1.5; color: var(--body); }
+.person .meta { display: grid; gap: 2px; }
+.group-label { display: flex; justify-content: space-between; gap: var(--s2); border-top: 1px solid var(--fg); padding-top: var(--s2); margin-bottom: var(--s4); }
+.group-label + .people { margin-bottom: var(--s12); }
+.group-label .label { color: var(--fg); }
+@media (max-width: 900px) { .people, .people.three { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .people.three { grid-template-columns: 1fr; } .people.three .person { grid-template-columns: 120px 1fr; column-gap: var(--s2); } .people.three .person img { grid-row: span 3; } }
+
+/* Ethics */
+.ethics { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); }
+.ethics .txt { grid-column: 1 / span 5; display: grid; gap: var(--s3); align-content: start; min-width: 0; }
+.ethics h2 { font-size: clamp(32px, 4vw, 52px); line-height: 1.15; letter-spacing: .12em; text-transform: uppercase; font-weight: 300; }
+.ethics .panel {
+  grid-column: 7 / span 6; background: var(--navy); color: rgba(242,237,227,.88); padding: var(--s6);
+  display: grid; gap: var(--s4); align-content: space-between; min-height: 100%; min-width: 0;
+}
+.panel blockquote { margin: 0; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.3; font-weight: 300; color: var(--beige); }
+.panel .label { color: rgba(242,237,227,.62); }
+.panel .b { width: 40px; color: var(--beige); }
+details.guides { grid-column: 1 / -1; margin-top: var(--s6); border-top: 1px solid var(--rule); }
+details.guides summary {
+  cursor: pointer; list-style: none; padding-block: var(--s3); display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--fg); font-weight: 500;
+}
+details.guides summary::-webkit-details-marker { display: none; }
+details.guides summary::after { content: "+"; font: 300 28px/1 var(--f-display); }
+details.guides[open] summary::after { content: "\2013"; }
+.guides ol { margin: 0; padding: 0 0 var(--s4); list-style: none; counter-reset: g; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 var(--s8); }
+.guides li { counter-increment: g; display: grid; grid-template-columns: 40px 1fr; gap: var(--s2); padding-block: var(--s2); border-top: 1px solid var(--rule); font-size: 16px; }
+.guides li::before { content: counter(g, decimal-leading-zero); font: 400 13px/1.9 var(--f-mono); color: var(--mute); }
+.guides li b { color: var(--fg); font-weight: 500; }
+.guides .note { grid-column: 1 / -1; font-size: 14px; color: var(--mute); padding-bottom: var(--s4); }
+@media (max-width: 900px) {
+  .ethics .txt, .ethics .panel { grid-column: 1 / -1; }
+  .ethics .panel { padding: var(--s4); }
+  .guides ol { grid-template-columns: 1fr; }
+}
+
+/* Partners, short */
+.partner { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); align-items: end; }
+.partner .label { grid-column: 1 / -1; }
+.partner h2 { grid-column: 1 / span 7; font-size: clamp(36px, 5vw, 64px); line-height: 1.04; letter-spacing: -.02em; }
+.partner h2 span { display: block; color: var(--mute); }
+.partner .side { grid-column: 9 / span 4; display: grid; gap: var(--s3); min-width: 0; }
+.backers { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s6); margin-top: var(--s8); padding-top: var(--s3); border-top: 1px solid var(--rule); align-items: baseline; }
+.backers .label { width: 100%; }
+.backers > span:not(.label) { font-size: 22px; color: var(--fg); font-weight: 400; }
+.backers span em { font-style: normal; font-weight: 300; color: var(--mute); }
+@media (max-width: 900px) { .partner h2, .partner .side { grid-column: 1 / -1; } }
+
+/* Footer */
+footer { background: var(--deep); color: rgba(242,237,227,.8); border-top: 1px solid rgba(242,237,227,.28); }
+footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8); }
+.f-top { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); }
+.f-top .wm { grid-column: 1 / span 6; color: var(--beige); width: 100%; max-width: 420px; height: auto; }
+.f-top dl { grid-column: 8 / span 5; margin: 0; display: grid; grid-template-columns: auto 1fr; gap: var(--s1) var(--s4); min-width: 0; }
+.f-top dt { font: 400 12px/1.9 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(242,237,227,.62); }
+.f-top dd { margin: 0; color: var(--beige); user-select: all; overflow-wrap: anywhere; }
+.f-top dd a { text-decoration: none; border-bottom: 1px solid rgba(242,237,227,.4); }
+.f-top dd a:hover { border-color: var(--beige); }
+.f-bot { display: flex; justify-content: space-between; gap: var(--s2); flex-wrap: wrap; border-top: 1px solid rgba(242,237,227,.2); padding-top: var(--s3); font-size: 14px; color: rgba(242,237,227,.62); }
+@media (max-width: 900px) { .f-top .wm, .f-top dl { grid-column: 1 / -1; } }
+@media (max-width: 520px) { section > .wrap { padding-block: var(--s12); } .hero .wrap { padding-block: var(--s6) var(--s8); } }
+
+/* Scroll reveal: elements are tagged by script, so without script everything stays visible */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--i, 0) * 70ms); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+
+
+<header class="site-header" id="site-header">
+  <nav class="nav-side nav-left" aria-label="Main left">
+    <a href="#mission">Mission</a>
+    <a href="#ethics">Ethics</a>
+    <a href="#team">Team</a>
+  </nav>
+  <a class="brand" href="#top" aria-label="Boreas home">
+    <svg viewBox="0 0 489 56" fill="currentColor" aria-hidden="true"><use href="#logo-word"/></svg>
+  </a>
+  <nav class="nav-side nav-right" aria-label="Main right">
+    <a href="#supervisors">Supervisors</a>
+    <a href="#partners">Partners</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+</header>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+  <a href="#mission">Mission</a>
+  <a href="#ethics">Ethics</a>
+  <a href="#team">Team</a>
+  <a href="#supervisors">Supervisors</a>
+  <a href="#partners">Partners</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- Logo symbols, extracted from the sponsor brochure vectors -->
+<!-- Logo symbols, extracted from the sponsor brochure vectors -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo-word" viewBox="0 0 489 56"><path d="M3.75 738.27C5.30 736.70 5.47 734.71 4.59 732.87C3.89 731.39 2.26 730.45 0.29 730.51L-18.00 730.51L-15.31 733.51L0.27 733.52C1.12 733.52 1.76 734.69 1.71 735.31C1.64 736.28 0.90 737.09 -0.15 737.09L-13.47 737.09L-10.87 739.99L0.75 739.99C1.57 739.99 2.18 741.12 2.25 741.77C2.32 742.36 1.81 743.82 0.99 743.82L-8.43 743.85L-5.70 746.89L1.46 746.88C3.56 746.88 5.18 745.17 5.58 743.52C6.07 741.49 5.62 739.54 3.75 738.27"/><path d="M65.67 24.86C70.34 20.12 70.85 14.08 68.20 8.51C66.07 4.04 61.14 1.18 55.20 1.37L-0.15 1.38L7.99 10.45L55.13 10.48C57.71 10.48 59.63 14.02 59.49 15.89C59.27 18.84 57.05 21.28 53.87 21.28L13.54 21.29L21.42 30.06L56.59 30.07C59.06 30.07 60.90 33.49 61.12 35.44C61.32 37.23 59.79 41.65 57.31 41.66L28.80 41.74L37.07 50.94L58.74 50.92C65.09 50.90 69.99 45.72 71.19 40.74C72.68 34.59 71.31 28.70 65.67 24.86"/><path d="M139.65 40.49C132.43 41.91 124.93 41.83 117.98 40.81C109.95 39.62 105.22 33.00 105.26 25.64C105.31 18.05 110.57 12.26 118.70 11.05C125.38 10.05 132.78 9.99 139.42 11.32C146.96 12.83 151.60 18.77 151.70 25.65C151.81 32.65 147.60 38.93 139.65 40.49M143.83 2.55C133.34 -0.00 121.90 0.07 111.58 3.00C100.70 6.08 94.25 15.01 94.47 26.12C94.70 37.41 101.67 46.75 112.93 49.49C122.62 51.84 133.14 51.89 143.32 49.55C155.54 46.73 162.40 37.05 162.35 25.65C162.31 14.71 155.27 5.34 143.83 2.55"/><path d="M228.26 33.37C236.20 32.70 240.62 24.95 240.32 17.37C239.96 7.92 233.06 1.31 223.70 1.33L178.00 1.42L185.95 10.32L224.27 10.56C228.03 10.59 229.74 15.78 229.55 18.50C229.36 21.20 227.20 25.28 223.71 25.31L200.73 25.48C200.24 25.48 199.83 25.47 199.46 25.46L225.83 55.01L238.88 55.30L219.30 33.78L228.26 33.37"/><path d="M315.63 30.00L315.50 21.17L279.05 21.17L279.07 10.47L317.29 10.46L317.32 1.30L268.21 1.37L268.21 51.01L317.33 50.96L317.20 41.77L279.08 41.69L279.06 30.16L315.63 30.00"/><path d="M402.00 51.15L414.18 50.75L382.88 1.37L370.84 1.57L340.00 50.79L352.12 50.97L377.13 11.49L402.00 51.15"/><path d="M473.96 50.97C481.80 50.96 486.48 45.24 487.31 38.22C488.40 28.98 482.28 20.72 472.57 20.68L449.68 20.60C446.86 20.59 444.72 18.39 444.51 15.87C444.35 13.89 446.49 10.54 449.06 10.53L482.43 10.38L482.41 1.27L447.09 1.40C439.65 1.43 434.70 7.69 434.34 14.60C433.92 22.55 439.37 29.86 447.75 29.93L472.26 30.12C475.65 30.14 477.50 33.36 477.41 36.24C477.34 38.47 475.37 41.73 472.52 41.74L435.43 41.80L435.43 51.04L473.96 50.97"/></symbol>
+  <symbol id="logo-b" viewBox="0 0 24.07 16.44"><path d="M21.75 7.82C23.30 6.26 23.47 4.26 22.59 2.42C21.89 0.95 20.26 0.00 18.29 0.06L0.00 0.06L2.69 3.06L18.27 3.07C19.12 3.07 19.76 4.24 19.71 4.86C19.64 5.83 18.90 6.64 17.85 6.64L4.53 6.64L7.13 9.54L18.75 9.55C19.57 9.55 20.18 10.68 20.25 11.32C20.32 11.91 19.81 13.37 18.99 13.38L9.57 13.40L12.30 16.44L19.46 16.44C21.56 16.43 23.18 14.72 23.58 13.07C24.07 11.04 23.62 9.09 21.75 7.82"/></symbol>
+</svg>
+
+<header class="hero s-deep" id="top">
+  <div class="wrap">
+    <div class="hero-top">
+      <span class="label">ETH Zürich · Focus Project 2026/27</span>
+      <span class="label">pd|z Product Development Group Zurich</span>
+    </div>
+
+    <svg class="wordmark" id="wm" viewBox="0 0 489 56" fill="currentColor" role="img" aria-label="Boreas"><path d="M3.75 738.27C5.30 736.70 5.47 734.71 4.59 732.87C3.89 731.39 2.26 730.45 0.29 730.51L-18.00 730.51L-15.31 733.51L0.27 733.52C1.12 733.52 1.76 734.69 1.71 735.31C1.64 736.28 0.90 737.09 -0.15 737.09L-13.47 737.09L-10.87 739.99L0.75 739.99C1.57 739.99 2.18 741.12 2.25 741.77C2.32 742.36 1.81 743.82 0.99 743.82L-8.43 743.85L-5.70 746.89L1.46 746.88C3.56 746.88 5.18 745.17 5.58 743.52C6.07 741.49 5.62 739.54 3.75 738.27"/><path d="M65.67 24.86C70.34 20.12 70.85 14.08 68.20 8.51C66.07 4.04 61.14 1.18 55.20 1.37L-0.15 1.38L7.99 10.45L55.13 10.48C57.71 10.48 59.63 14.02 59.49 15.89C59.27 18.84 57.05 21.28 53.87 21.28L13.54 21.29L21.42 30.06L56.59 30.07C59.06 30.07 60.90 33.49 61.12 35.44C61.32 37.23 59.79 41.65 57.31 41.66L28.80 41.74L37.07 50.94L58.74 50.92C65.09 50.90 69.99 45.72 71.19 40.74C72.68 34.59 71.31 28.70 65.67 24.86"/><path d="M139.65 40.49C132.43 41.91 124.93 41.83 117.98 40.81C109.95 39.62 105.22 33.00 105.26 25.64C105.31 18.05 110.57 12.26 118.70 11.05C125.38 10.05 132.78 9.99 139.42 11.32C146.96 12.83 151.60 18.77 151.70 25.65C151.81 32.65 147.60 38.93 139.65 40.49M143.83 2.55C133.34 -0.00 121.90 0.07 111.58 3.00C100.70 6.08 94.25 15.01 94.47 26.12C94.70 37.41 101.67 46.75 112.93 49.49C122.62 51.84 133.14 51.89 143.32 49.55C155.54 46.73 162.40 37.05 162.35 25.65C162.31 14.71 155.27 5.34 143.83 2.55"/><path d="M228.26 33.37C236.20 32.70 240.62 24.95 240.32 17.37C239.96 7.92 233.06 1.31 223.70 1.33L178.00 1.42L185.95 10.32L224.27 10.56C228.03 10.59 229.74 15.78 229.55 18.50C229.36 21.20 227.20 25.28 223.71 25.31L200.73 25.48C200.24 25.48 199.83 25.47 199.46 25.46L225.83 55.01L238.88 55.30L219.30 33.78L228.26 33.37"/><path d="M315.63 30.00L315.50 21.17L279.05 21.17L279.07 10.47L317.29 10.46L317.32 1.30L268.21 1.37L268.21 51.01L317.33 50.96L317.20 41.77L279.08 41.69L279.06 30.16L315.63 30.00"/><path d="M402.00 51.15L414.18 50.75L382.88 1.37L370.84 1.57L340.00 50.79L352.12 50.97L377.13 11.49L402.00 51.15"/><path d="M473.96 50.97C481.80 50.96 486.48 45.24 487.31 38.22C488.40 28.98 482.28 20.72 472.57 20.68L449.68 20.60C446.86 20.59 444.72 18.39 444.51 15.87C444.35 13.89 446.49 10.54 449.06 10.53L482.43 10.38L482.41 1.27L447.09 1.40C439.65 1.43 434.70 7.69 434.34 14.60C433.92 22.55 439.37 29.86 447.75 29.93L472.26 30.12C475.65 30.14 477.50 33.36 477.41 36.24C477.34 38.47 475.37 41.73 472.52 41.74L435.43 41.80L435.43 51.04L473.96 50.97"/></svg>
+
+    <svg class="diagram" id="dg" data-intro="on" viewBox="100 400 1840 660" role="img" aria-label="Requirements such as range, speed, interception time and cost feed into the Boreas pipeline, which outputs an exploded interceptor design.">
+      <defs>
+        <clipPath id="cp-wires"><rect class="wire-clip" x="620" y="560" width="290" height="460"/></clipPath>
+      </defs>
+      <g stroke="currentColor" fill="none">
+        <text class="type" x="135" y="523" font-size="19" letter-spacing="5" opacity=".6" stroke="none">INPUT / REQUIREMENTS</text>
+        <g class="slider" data-x="435" transform="translate(0,631)">
+          <text x="135" y="-22" font-size="23" stroke="none">range</text>
+          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
+          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
+          <line class="fill" x1="133" x2="435" stroke-width="4"/>
+          <g class="knob"><circle cx="435" r="14" fill="#0d1c2e" stroke-width="3.5"/><circle cx="435" r="4" fill="currentColor" stroke="none"/></g>
+        </g>
+        <g class="slider" data-x="519" data-via="406" transform="translate(0,738)">
+          <text x="135" y="-22" font-size="23" stroke="none">speed</text>
+          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
+          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
+          <circle class="ghost" cx="406" r="14" stroke-width="1.5" stroke-dasharray="3 4" opacity=".5"/>
+          <path class="arrow" d="M431 -25h64m-8 -6 8 6-8 6" stroke-width="1.5" opacity=".6"/>
+          <line class="fill" x1="133" x2="519" stroke-width="4"/>
+          <g class="knob"><circle cx="519" r="14" fill="#0d1c2e" stroke-width="3.5"/><circle cx="519" r="4" fill="currentColor" stroke="none"/></g>
+        </g>
+        <g class="slider" data-x="313" transform="translate(0,846)">
+          <text x="135" y="-22" font-size="23" stroke="none">interception time</text>
+          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
+          <line class="fill" x1="133" x2="313" stroke-width="4"/>
+          <g class="knob"><circle cx="313" r="14" fill="#0d1c2e" stroke-width="3.5"/><circle cx="313" r="4" fill="currentColor" stroke="none"/></g>
+        </g>
+        <g class="slider" data-x="378" transform="translate(0,953)">
+          <text x="135" y="-22" font-size="23" stroke="none">cost</text>
+          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
+          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
+          <line class="fill" x1="133" x2="378" stroke-width="4"/>
+          <g class="knob"><circle cx="378" r="14" fill="#0d1c2e" stroke-width="3.5"/><circle cx="378" r="4" fill="currentColor" stroke="none"/></g>
+        </g>
+        <g clip-path="url(#cp-wires)">
+          <g stroke-width="2" stroke-dasharray="7 7" opacity=".55">
+            <path d="M632 631 C 700 631, 690 792, 750 792"/>
+            <path d="M632 738 C 690 738, 700 792, 750 792"/>
+            <path d="M632 846 C 690 846, 700 792, 750 792"/>
+            <path d="M632 953 C 700 953, 690 792, 750 792"/>
+            <path class="wire-out" d="M781 792 L 860 778"/>
+          </g>
+        </g>
+        <g class="node">
+          <circle class="node-orbit" cx="765" cy="792" r="30" stroke-width="1.5" stroke-dasharray="4 6" opacity="0"/>
+          <circle cx="765" cy="792" r="17" fill="#0d1c2e" stroke-width="3.5"/><circle cx="765" cy="792" r="5" fill="currentColor" stroke="none"/>
+        </g>
+        <text class="type" x="765" y="846" font-size="18" letter-spacing="5" text-anchor="middle" opacity=".6" stroke="none">PIPELINE</text>
+        <text class="type" x="1900" y="1012" font-size="19" letter-spacing="5" text-anchor="end" opacity=".6" stroke="none">OUTPUT</text>
+        <text class="type" x="1900" y="1043" font-size="19" letter-spacing="5" text-anchor="end" opacity=".6" stroke="none">INTERCEPTOR DESIGN</text>
+        <g id="drone" stroke-linejoin="round" stroke-linecap="round"></g>
+        <g id="callouts"></g>
+      </g>
+    </svg>
+    <button id="replay" class="replay" type="button" hidden>Replay intro ↻</button>
+    <div class="hero-copy">
+      <h1>Interceptor drones, <span>designed to requirement.</span></h1>
+      <div class="side">
+        <p>Boreas is building a digital design and manufacturing platform. Set range, speed, interception time and cost; the pipeline derives a tailored interceptor that can be printed and flown.</p>
+        <div class="btns">
+          <a class="btn" href="#mission">Our mission</a>
+          <a class="btn ghost" href="#partners">Become a partner</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+<script type="module" src="assets/drone/hero3d.js"></script>
+<script>
+/* if the 3D module cannot load (offline CDN, no WebGL), fall back to the static PNG drawing */
+setTimeout(function () {
+  if (window.__boreas3d) return;
+  var g = document.getElementById('drone');
+  if (g && !g.childNodes.length) {
+    var i = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+    i.setAttribute('href', 'assets/drone-bp.png'); i.setAttribute('x', 960); i.setAttribute('y', 520); i.setAttribute('width', 860); i.setAttribute('height', 500);
+    g.appendChild(i);
+  }
+}, 6000);
+</script>
+
+<main>
+<section id="mission" class="s-beige">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Mission</span>
+      <h2>Safer skies, <span>today and tomorrow.</span></h2>
+    </div>
+    <div class="two">
+      <article>
+        <span class="label">Challenge</span>
+        <h3>Threats change faster than fixed systems.</h3>
+        <p>As drones become more accessible, <strong>risks to people and critical infrastructure</strong> are growing. Interceptor drones offer an effective response. Mission requirements vary widely, and rapidly advancing technology can make fixed solutions obsolete. To remain effective, <strong>interceptors must be flexible and evolve just as quickly.</strong></p>
+      </article>
+      <article>
+        <span class="label">Mission</span>
+        <h3>A platform instead of a single airframe.</h3>
+        <p>Boreas is building a <strong>digital design and manufacturing platform</strong> that enables the rapid development of tailored interceptor drones. <strong>Design automation</strong> adapts systems to new requirements, while <strong>additive manufacturing</strong> enables flexible production.</p>
+      </article>
+    </div>
+    <div class="steps">
+      <ol>
+        <li><span class="k">Input</span><h3>Requirements</h3><p>The user defines what the mission needs: range, speed, interception time and cost.</p></li>
+        <li><span class="k">Pipeline</span><h3>Design automation</h3><p>Requirements become technical parameters and a concrete design, coupling aerodynamics, structures, propulsion, electronics and control.</p></li>
+        <li><span class="k">Output</span><h3>Additive manufacturing</h3><p>The design is produced flexibly, assembled simply and commissioned with a low threshold for testing.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="ethics" class="s-paper">
+  <div class="wrap">
+    <div class="ethics">
+      <div class="txt">
+        <span class="label">Ethics Statement</span>
+        <h2>Ethical standards</h2>
+        <p class="lead">Our primary product is the engineering pipeline, not the drone. The interceptor is a defined case study to evaluate the method, and the method stays transferable to other platforms such as capture and net drones.</p>
+        <p>The underlying engineering is dual-use. We address this through responsible system design, information security and publication practice, together with the ETH Ethics Commission. Weapons, explosive payloads and autonomous target selection remain outside the project.</p>
+      </div>
+      <div class="panel">
+        <svg class="b" viewBox="0 0 24.07 16.44" fill="currentColor" aria-hidden="true"><use href="#logo-b"/></svg>
+        <blockquote>The scientific methodology may be made transparent. The immediate automation of a deployable design is not published without further review and appropriate restrictions.</blockquote>
+        <span class="label">Ethics Statement v2.2 · 29.09.2026 · Preliminary</span>
+      </div>
+      <details class="guides">
+        <summary>Read the seven guidelines</summary>
+        <ol>
+          <li><span><b>Transferability.</b> The pipeline remains applicable to other platforms, including capture and net drones.</span></li>
+          <li><span><b>No weapons.</b> Autonomous target selection, engagement without human authorisation, weapons and explosive payloads remain outside the project.</span></li>
+          <li><span><b>Responsible publication.</b> Methodology and general findings may be published openly; directly deployable implementations undergo separate review.</span></li>
+          <li><span><b>Information security.</b> Sensitive technical information and other enabling materials are protected against unauthorised access or disclosure.</span></li>
+          <li><span><b>Responsible collaboration.</b> External collaboration is possible if information sharing stays proportionate to the jointly defined scope.</span></li>
+          <li><span><b>Project-associated personnel.</b> Everyone with substantial access to sensitive information follows the Statement and relevant ETH rules.</span></li>
+          <li><span><b>Human responsibility.</b> The pipeline supports engineering decisions but makes no operational or societal decisions concerning actual interception.</span></li>
+        </ol>
+        <p class="note">After the Focus Project, the results transition to the pd|z laboratory. Prof. Mirko Meboldt endorses the Statement and its continued application.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="team" class="s-navy">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Team</span>
+      <h2>The people <span>behind Boreas.</span></h2>
+      <div class="aside"><p>Eight ETH Zürich mechanical engineering students, each owning one part of the system.</p></div>
+    </div>
+    <div class="people">
+      <figure class="person"><img src="assets/team/bernold.jpg" alt="Julian Bernold" loading="lazy"><figcaption class="meta"><h3>Julian Bernold</h3><span class="role">Testing</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/dietz.jpg" alt="Lukas Dietz" loading="lazy"><figcaption class="meta"><h3>Lukas Dietz</h3><span class="role">Powertrain</span><span class="soft">Workshop Manager</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/gartmann.jpg" alt="Elia Gartmann" loading="lazy"><figcaption class="meta"><h3>Elia Gartmann</h3><span class="role">Integration</span><span class="soft">Team Lead</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/infanger.jpg" alt="Nicolo Infanger" loading="lazy"><figcaption class="meta"><h3>Nicolo Infanger</h3><span class="role">Structures</span><span class="soft">Accounting</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/john.jpg" alt="Leon John" loading="lazy"><figcaption class="meta"><h3>Leon John</h3><span class="role">Pipeline</span><span class="soft">Ethics &amp; Safety</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/koll.jpg" alt="Lucas Koll" loading="lazy"><figcaption class="meta"><h3>Lucas Koll</h3><span class="role">Aerodynamics</span><span class="soft">Chief of Manufacturing</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/rizos.jpg" alt="Panos Rizos" loading="lazy"><figcaption class="meta"><h3>Panos Rizos</h3><span class="role">Controls</span><span class="soft">Public Relations</span></figcaption></figure>
+      <figure class="person"><img src="assets/team/walter.jpg" alt="Bruno Walter" loading="lazy"><figcaption class="meta"><h3>Bruno Walter</h3><span class="role">Pipeline</span><span class="soft">Sponsoring &amp; Website</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="supervisors" class="s-beige">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="label">Supervisors &amp; Coaches</span>
+      <h2>Guided by <span>experience.</span></h2>
+      <div class="aside"><p>Boreas is hosted by the Product Development Group Zurich (pd|z) at ETH Zürich and coached by members of last year's Focus Project Zephyr.</p></div>
+    </div>
+
+    <div class="group-label"><span class="label">Supervisors</span><span class="label">pd|z · ETH Zürich</span></div>
+    <div class="people three">
+      <figure class="person"><img src="assets/people/meboldt.jpg" alt="Prof. Dr. Mirko Meboldt" loading="lazy">
+        <figcaption class="meta"><h3>Prof. Dr. Mirko Meboldt</h3><span class="soft">Full Professor · Head of pd|z</span></figcaption>
+        <p class="bio">Chair of Product Development and Engineering Design at ETH Zürich since 2012. Before that he led global CAD/PDM and technology development processes at Hilti. His research covers user-oriented product innovation and new production technologies.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/zander.jpg" alt="Mark Zander" loading="lazy">
+        <figcaption class="meta"><h3>Mark Zander</h3><span class="soft">Head of Research Group · pd|z</span></figcaption>
+        <p class="bio">Leads the research group Design for New Technologies. He studies what makes development teams successful, how design methods influence that success, and how to assess project-based teamwork.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/buerkli.jpg" alt="Julian Bürkli" loading="lazy">
+        <figcaption class="meta"><h3>Julian Bürkli</h3><span class="soft">Researcher · pd|z</span></figcaption>
+        <p class="bio">Works on additively manufactured shape memory alloy mechanisms and design automation, with a background in composite materials and lightweight structures.</p>
+      </figure>
+    </div>
+
+    <div class="group-label"><span class="label">Coaches</span><span class="label">Project Zephyr · Focus Project 2025/26</span></div>
+    <div class="people three">
+      <figure class="person"><img src="assets/people/lehmann.jpg" alt="Jonas Lehmann" loading="lazy">
+        <figcaption class="meta"><h3>Jonas Lehmann</h3><span class="soft">Student Coach</span></figcaption>
+        <p class="bio">Team lead of Project Zephyr, last year's ETH Focus Project drone. Brings first-hand experience of running a Focus Project from concept to flight.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/wuergler.jpg" alt="Nicolas Würgler" loading="lazy">
+        <figcaption class="meta"><h3>Nicolas Würgler</h3><span class="soft">Student Coach</span></figcaption>
+        <p class="bio">Was responsible for system integration at Project Zephyr. Supports Boreas on bringing subsystems together into one aircraft.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/girgis.jpg" alt="David Girgis" loading="lazy">
+        <figcaption class="meta"><h3>David Girgis</h3><span class="soft">Student Coach</span></figcaption>
+        <p class="bio">Developed the vehicle control unit (VCU) at Project Zephyr. Supports Boreas on electronics and onboard control.</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="partners" class="s-navy">
+  <div class="wrap">
+    <div class="partner">
+      <span class="label">Sponsoring</span>
+      <h2>Become an <span>industry partner.</span></h2>
+      <div class="side">
+        <p>Support Boreas with expertise, resources, in-kind contributions or funding, starting at CHF 1'000. We are open to packages that fit your goals.</p>
+        <div class="btns"><a class="btn" href="mailto:boreas@ethz.ch?subject=Sponsoring%20Boreas">Contact sponsoring</a></div>
+      </div>
+    </div>
+    <div class="backers">
+      <span class="label">Hosted by</span>
+      <span>ETH Zürich</span>
+      <span>pd|z <em>Product Development Group Zurich</em></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer id="contact" class="s-deep">
+  <div class="wrap">
+    <div class="f-top">
+      <svg class="wm" viewBox="0 0 489 56" fill="currentColor" role="img" aria-label="Boreas"><use href="#logo-word"/></svg>
+      <dl>
+        <dt>E-mail</dt><dd><a href="mailto:boreas@ethz.ch">boreas@ethz.ch</a></dd>
+        <dt>Instagram</dt><dd><a href="https://www.instagram.com/boreas_eth/" target="_blank" rel="noopener">@boreas_eth</a></dd>
+        <dt>Web</dt><dd>projectboreas.ch</dd>
+        <dt>Host</dt><dd>pd|z, ETH Zürich</dd>
+      </dl>
+    </div>
+    <div class="f-bot">
+      <span>© 2026 Boreas · ETH Zürich Focus Project</span>
+      <span>Made in Zürich</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var head = document.getElementById('site-header'), tog = document.getElementById('menu-toggle'), mnav = document.getElementById('mobile-nav');
+  function onScroll() { head.classList.toggle('is-scrolled', (window.scrollY || document.documentElement.scrollTop) > 24); }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  function setMenu(open) {
+    mnav.classList.toggle('is-open', open); tog.setAttribute('aria-expanded', open ? 'true' : 'false'); tog.textContent = open ? 'Close' : 'Menu';
+  }
+  tog.addEventListener('click', function () { setMenu(!mnav.classList.contains('is-open')); });
+  [].forEach.call(mnav.querySelectorAll('a'), function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  addEventListener('resize', function () { if (innerWidth > 900) setMenu(false); });
+
+  /* scroll reveal for the content blocks */
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var sel = '.sec-head, .two article, .steps li, .person, .ethics .txt, .ethics .panel, details.guides, .partner, .backers, .group-label';
+  var els = [].slice.call(document.querySelectorAll('main ' + sel));
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  els.forEach(function (el) {
+    var sib = el.parentElement ? [].indexOf.call(el.parentElement.children, el) : 0;
+    el.style.setProperty('--i', Math.min(sib % 4, 3));
+    var r = el.getBoundingClientRect();
+    if (r.top < innerHeight * 0.92 && r.bottom > 0) { return; }
+    el.classList.add('reveal'); io.observe(el);
+  });
+  /* safety net: never leave content hidden */
+  setTimeout(function () { els.forEach(function (el) { el.classList.add('in'); }); }, 6000);
+})();
+</script>
+
+</body></html>

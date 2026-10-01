@@ -138,6 +138,14 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 }
 .replay:hover { color: var(--fg); border-color: var(--fg); }
 
+/* Wordmark flight: the big hero wordmark shrinks and travels into the header while scrolling */
+.wm-slot { aspect-ratio: 489 / 56; }
+.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; color: var(--beige); }
+.wm-fly .wordmark { display: block; width: 100%; height: auto; }
+.wm-flying .site-header .brand svg { opacity: 0; }
+body:has(.mobile-nav.is-open) .wm-fly { opacity: 0; }
+.wm-flying body:has(.mobile-nav.is-open) .site-header .brand svg { opacity: 1; }
+
 /* ---------- Sections ---------- */
 section > .wrap { padding-block: var(--s16); }
 .sec-head { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--s3); margin-bottom: var(--s8); align-items: end; }
@@ -284,7 +292,9 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
       <span class="label">pd|z Product Development Group Zurich</span>
     </div>
 
+    <div class="wm-slot" id="wm-slot">
     <svg class="wordmark" id="wm" viewBox="0 0 489 56" fill="currentColor" role="img" aria-label="Boreas"><path d="M3.75 738.27C5.30 736.70 5.47 734.71 4.59 732.87C3.89 731.39 2.26 730.45 0.29 730.51L-18.00 730.51L-15.31 733.51L0.27 733.52C1.12 733.52 1.76 734.69 1.71 735.31C1.64 736.28 0.90 737.09 -0.15 737.09L-13.47 737.09L-10.87 739.99L0.75 739.99C1.57 739.99 2.18 741.12 2.25 741.77C2.32 742.36 1.81 743.82 0.99 743.82L-8.43 743.85L-5.70 746.89L1.46 746.88C3.56 746.88 5.18 745.17 5.58 743.52C6.07 741.49 5.62 739.54 3.75 738.27"/><path d="M65.67 24.86C70.34 20.12 70.85 14.08 68.20 8.51C66.07 4.04 61.14 1.18 55.20 1.37L-0.15 1.38L7.99 10.45L55.13 10.48C57.71 10.48 59.63 14.02 59.49 15.89C59.27 18.84 57.05 21.28 53.87 21.28L13.54 21.29L21.42 30.06L56.59 30.07C59.06 30.07 60.90 33.49 61.12 35.44C61.32 37.23 59.79 41.65 57.31 41.66L28.80 41.74L37.07 50.94L58.74 50.92C65.09 50.90 69.99 45.72 71.19 40.74C72.68 34.59 71.31 28.70 65.67 24.86"/><path d="M139.65 40.49C132.43 41.91 124.93 41.83 117.98 40.81C109.95 39.62 105.22 33.00 105.26 25.64C105.31 18.05 110.57 12.26 118.70 11.05C125.38 10.05 132.78 9.99 139.42 11.32C146.96 12.83 151.60 18.77 151.70 25.65C151.81 32.65 147.60 38.93 139.65 40.49M143.83 2.55C133.34 -0.00 121.90 0.07 111.58 3.00C100.70 6.08 94.25 15.01 94.47 26.12C94.70 37.41 101.67 46.75 112.93 49.49C122.62 51.84 133.14 51.89 143.32 49.55C155.54 46.73 162.40 37.05 162.35 25.65C162.31 14.71 155.27 5.34 143.83 2.55"/><path d="M228.26 33.37C236.20 32.70 240.62 24.95 240.32 17.37C239.96 7.92 233.06 1.31 223.70 1.33L178.00 1.42L185.95 10.32L224.27 10.56C228.03 10.59 229.74 15.78 229.55 18.50C229.36 21.20 227.20 25.28 223.71 25.31L200.73 25.48C200.24 25.48 199.83 25.47 199.46 25.46L225.83 55.01L238.88 55.30L219.30 33.78L228.26 33.37"/><path d="M315.63 30.00L315.50 21.17L279.05 21.17L279.07 10.47L317.29 10.46L317.32 1.30L268.21 1.37L268.21 51.01L317.33 50.96L317.20 41.77L279.08 41.69L279.06 30.16L315.63 30.00"/><path d="M402.00 51.15L414.18 50.75L382.88 1.37L370.84 1.57L340.00 50.79L352.12 50.97L377.13 11.49L402.00 51.15"/><path d="M473.96 50.97C481.80 50.96 486.48 45.24 487.31 38.22C488.40 28.98 482.28 20.72 472.57 20.68L449.68 20.60C446.86 20.59 444.72 18.39 444.51 15.87C444.35 13.89 446.49 10.54 449.06 10.53L482.43 10.38L482.41 1.27L447.09 1.40C439.65 1.43 434.70 7.69 434.34 14.60C433.92 22.55 439.37 29.86 447.75 29.93L472.26 30.12C475.65 30.14 477.50 33.36 477.41 36.24C477.34 38.47 475.37 41.73 472.52 41.74L435.43 41.80L435.43 51.04L473.96 50.97"/></svg>
+    </div>
 
     <svg class="diagram" id="dg" data-intro="on" viewBox="100 400 1840 660" role="img" aria-label="Requirements such as range, speed, interception time and cost feed into the Boreas pipeline, which outputs an exploded interceptor design.">
       <defs>
@@ -355,6 +365,37 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
   </div>
 </header>
 
+<script>
+/* Wordmark flight: #wm lives in a fixed layer; its slot in the hero keeps the layout.
+   Scroll progress p = how far the slot has travelled towards the header brand. */
+(function () {
+  var wm = document.getElementById('wm'), slot = document.getElementById('wm-slot'), brand = document.querySelector('.site-header .brand svg');
+  var head = document.getElementById('site-header');
+  if (!wm || !slot || !brand) return;
+  var fly = document.createElement('div'); fly.className = 'wm-fly'; fly.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(fly); fly.appendChild(wm);
+  document.documentElement.classList.add('wm-flying');
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  var raf = 0, until = 0;
+  function update() {
+    raf = 0;
+    var s = slot.getBoundingClientRect(), b = brand.getBoundingClientRect();
+    var dist = Math.max(1, s.top + scrollY - b.top, innerHeight * .5); // at least half a screen of scrolling
+    var e = ease(Math.min(1, Math.max(0, scrollY / dist)));
+    var x = s.left + (b.left - s.left) * e, y0 = Math.max(s.top, b.top), y = y0 + (b.top - y0) * e, k = 1 + (b.width / s.width - 1) * e;
+    fly.style.width = s.width + 'px';
+    fly.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + k.toFixed(4) + ')';
+    if (performance.now() < until) req(); // follow the header's height transition
+  }
+  function req() { if (!raf) raf = requestAnimationFrame(update); }
+  function follow() { until = performance.now() + 400; update(); }
+  addEventListener('scroll', follow, { passive: true });
+  addEventListener('resize', req);
+  if (window.ResizeObserver) { new ResizeObserver(req).observe(slot); new ResizeObserver(req).observe(brand); }
+  if (document.fonts) document.fonts.ready.then(req);
+  update();
+})();
+</script>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
 <script type="module" src="assets/drone/hero3d.js"></script>
 <script>

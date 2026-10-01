@@ -1,4 +1,16 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.eth-logo { height: 1em; width: auto; aspect-ratio: 6 / 1; display: inline-block; vertical-align: -.12em; color: var(--fg); }
+.hero-eth { display: inline-flex; align-items: center; gap: .9em; }
+.hero-eth .eth-logo { height: 22px; }
+.backers .bk-logo .eth-logo { height: 30px; }
+.f-bot .eth-logo { height: 12px; }
+dd .eth-logo { height: 13px; }
+.pdz-logo { height: 1em; width: auto; aspect-ratio: 98 / 50; display: inline-block; vertical-align: -.2em; color: var(--fg); }
+.hero-eth .pdz-logo { height: 34px; }
+.backers .bk-logo { display: inline-flex; align-items: center; gap: .7em; }
+.backers .bk-logo .pdz-logo { height: 46px; }
+.backers .bk-logo em { font-size: 14px; font-style: normal; color: var(--mute); }
+dd .pdz-logo { height: 20px; margin-right: .5em; }
+</style></head><body>
 <title>Boreas</title>
 <meta name="description" content="Boreas – ETH Zürich Focus Project 2026/27. A digital design and manufacturing pipeline for tailored interceptor drones.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -147,7 +159,7 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 
 /* Wordmark flight: the big hero wordmark shrinks and travels into the header while scrolling */
 .wm-slot { aspect-ratio: 489 / 56; }
-.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; color: var(--top-ink); }
+.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; backface-visibility: hidden; color: var(--top-ink); }
 .wm-fly .wordmark { display: block; width: 100%; height: auto; }
 .wm-flying .site-header .brand svg { opacity: 0; }
 body:has(.mobile-nav.is-open) .wm-fly { opacity: 0; }
@@ -259,8 +271,8 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 </style>
 <!-- TEMPORARY palette tool: delete these two lines and assets/dev/ to remove it -->
-<link rel="stylesheet" href="assets/dev/palette.css">
-<script src="assets/dev/palette.js"></script>
+<link rel="stylesheet" href="assets/dev/palette.css?v=1">
+<script src="assets/dev/palette.js?v=1"></script>
 
 <header class="site-header" id="site-header">
   <nav class="nav-side nav-left" aria-label="Main left">
@@ -292,13 +304,15 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo-word" viewBox="0 0 489 56"><path d="M3.75 738.27C5.30 736.70 5.47 734.71 4.59 732.87C3.89 731.39 2.26 730.45 0.29 730.51L-18.00 730.51L-15.31 733.51L0.27 733.52C1.12 733.52 1.76 734.69 1.71 735.31C1.64 736.28 0.90 737.09 -0.15 737.09L-13.47 737.09L-10.87 739.99L0.75 739.99C1.57 739.99 2.18 741.12 2.25 741.77C2.32 742.36 1.81 743.82 0.99 743.82L-8.43 743.85L-5.70 746.89L1.46 746.88C3.56 746.88 5.18 745.17 5.58 743.52C6.07 741.49 5.62 739.54 3.75 738.27"/><path d="M65.67 24.86C70.34 20.12 70.85 14.08 68.20 8.51C66.07 4.04 61.14 1.18 55.20 1.37L-0.15 1.38L7.99 10.45L55.13 10.48C57.71 10.48 59.63 14.02 59.49 15.89C59.27 18.84 57.05 21.28 53.87 21.28L13.54 21.29L21.42 30.06L56.59 30.07C59.06 30.07 60.90 33.49 61.12 35.44C61.32 37.23 59.79 41.65 57.31 41.66L28.80 41.74L37.07 50.94L58.74 50.92C65.09 50.90 69.99 45.72 71.19 40.74C72.68 34.59 71.31 28.70 65.67 24.86"/><path d="M139.65 40.49C132.43 41.91 124.93 41.83 117.98 40.81C109.95 39.62 105.22 33.00 105.26 25.64C105.31 18.05 110.57 12.26 118.70 11.05C125.38 10.05 132.78 9.99 139.42 11.32C146.96 12.83 151.60 18.77 151.70 25.65C151.81 32.65 147.60 38.93 139.65 40.49M143.83 2.55C133.34 -0.00 121.90 0.07 111.58 3.00C100.70 6.08 94.25 15.01 94.47 26.12C94.70 37.41 101.67 46.75 112.93 49.49C122.62 51.84 133.14 51.89 143.32 49.55C155.54 46.73 162.40 37.05 162.35 25.65C162.31 14.71 155.27 5.34 143.83 2.55"/><path d="M228.26 33.37C236.20 32.70 240.62 24.95 240.32 17.37C239.96 7.92 233.06 1.31 223.70 1.33L178.00 1.42L185.95 10.32L224.27 10.56C228.03 10.59 229.74 15.78 229.55 18.50C229.36 21.20 227.20 25.28 223.71 25.31L200.73 25.48C200.24 25.48 199.83 25.47 199.46 25.46L225.83 55.01L238.88 55.30L219.30 33.78L228.26 33.37"/><path d="M315.63 30.00L315.50 21.17L279.05 21.17L279.07 10.47L317.29 10.46L317.32 1.30L268.21 1.37L268.21 51.01L317.33 50.96L317.20 41.77L279.08 41.69L279.06 30.16L315.63 30.00"/><path d="M402.00 51.15L414.18 50.75L382.88 1.37L370.84 1.57L340.00 50.79L352.12 50.97L377.13 11.49L402.00 51.15"/><path d="M473.96 50.97C481.80 50.96 486.48 45.24 487.31 38.22C488.40 28.98 482.28 20.72 472.57 20.68L449.68 20.60C446.86 20.59 444.72 18.39 444.51 15.87C444.35 13.89 446.49 10.54 449.06 10.53L482.43 10.38L482.41 1.27L447.09 1.40C439.65 1.43 434.70 7.69 434.34 14.60C433.92 22.55 439.37 29.86 447.75 29.93L472.26 30.12C475.65 30.14 477.50 33.36 477.41 36.24C477.34 38.47 475.37 41.73 472.52 41.74L435.43 41.80L435.43 51.04L473.96 50.97"/></symbol>
   <symbol id="logo-b" viewBox="0 0 24.07 16.44"><path d="M21.75 7.82C23.30 6.26 23.47 4.26 22.59 2.42C21.89 0.95 20.26 0.00 18.29 0.06L0.00 0.06L2.69 3.06L18.27 3.07C19.12 3.07 19.76 4.24 19.71 4.86C19.64 5.83 18.90 6.64 17.85 6.64L4.53 6.64L7.13 9.54L18.75 9.55C19.57 9.55 20.18 10.68 20.25 11.32C20.32 11.91 19.81 13.37 18.99 13.38L9.57 13.40L12.30 16.44L19.46 16.44C21.56 16.43 23.18 14.72 23.58 13.07C24.07 11.04 23.62 9.09 21.75 7.82"/></symbol>
+  <symbol id="logo-eth" viewBox="0 0 120 20"><path d="M43.6892 7.59685H39.3218L40.8555 0H3.90295L0 19.6252H14.7315L15.7334 14.5606H7.02833L7.52612 12.0283H16.2369L17.1209 7.59685H8.43034L8.92687 5.06457H22.7592L19.8638 19.6252H25.8707L28.7649 5.06457H33.8077L30.9135 19.6252H36.9665L38.4642 12.0283H42.8303L41.3338 19.6252H47.3577L51.2632 0H45.2229L43.6892 7.59685ZM69.4622 2.53228H71.4717L71.9695 0H69.9695L69.4622 2.53228ZM74.616 2.53228H76.6267L77.1232 0H75.1232L74.616 2.53228ZM93.4111 2.53228H95.4205L95.9196 0H93.9183L93.4111 2.53228ZM103.47 6.27247C99.9631 6.27247 97.5024 8.76677 96.7148 13.1172C96.5907 13.7981 96.5275 14.4888 96.5258 15.181C96.5258 18.1527 98.3109 20 101.189 20C102.013 20.0022 102.829 19.8372 103.588 19.515C104.347 19.1928 105.033 18.7199 105.606 18.1248L105.623 18.1058L104.509 16.7333L104.489 16.7093L104.467 16.7321C104.087 17.2105 103.604 17.597 103.055 17.8628C102.506 18.1287 101.905 18.2671 101.295 18.2679C99.9234 18.2679 98.4571 17.4411 98.4571 15.1266C98.4621 14.4552 98.5331 13.786 98.6688 13.1286C98.8751 11.7182 99.4666 10.3928 100.378 9.29981C100.745 8.89298 101.193 8.56784 101.694 8.34522C102.194 8.1226 102.734 8.00742 103.281 8.00708C103.806 7.9833 104.326 8.10937 104.782 8.37067C105.238 8.63197 105.611 9.0178 105.858 9.4834L105.874 9.50999L107.293 8.29956L107.313 8.28183L107.298 8.26031C106.89 7.62018 106.321 7.09939 105.649 6.75041C104.977 6.40142 104.225 6.23657 103.47 6.27247ZM116.295 5.98822C115.59 5.9532 114.886 6.07022 114.23 6.33141C113.573 6.59261 112.98 6.99193 112.49 7.50252L113.998 0H112.054L108.15 19.6252H110.093L111.714 11.3807C112.408 7.90642 115.092 7.73043 115.621 7.73043C115.937 7.69809 116.256 7.73604 116.555 7.84158C116.855 7.94713 117.128 8.11768 117.354 8.3411C117.581 8.56453 117.755 8.83536 117.866 9.13432C117.977 9.43329 118.02 9.75306 117.994 10.0709C117.984 10.4893 117.939 10.9062 117.858 11.3168L116.209 19.6252H118.15L119.855 11.1364C119.943 10.6954 119.989 10.2471 119.991 9.79741C120.026 9.29629 119.955 8.79341 119.783 8.32176C119.611 7.85011 119.342 7.42034 118.993 7.06064C118.644 6.70095 118.223 6.41946 117.758 6.23464C117.293 6.04981 116.795 5.96584 116.295 5.98822ZM90.0967 19.5929L90.0904 19.6258H92.0066L94.6215 6.33134H92.7375L90.0967 19.5929ZM54.9538 8.19447L54.9481 8.23056H61.4522L52.8769 18.021L52.8731 18.0261L52.5511 19.6258H61.7868L62.1503 17.7266H55.2462L63.8466 7.93618L63.8504 7.92985L64.1736 6.33134H55.3129L54.9538 8.19447ZM86.9064 6.16928C86.2145 6.15103 85.5279 6.29363 84.8999 6.58596C84.272 6.87828 83.7198 7.31243 83.2864 7.85451L83.5838 6.3611L83.5888 6.33134H81.6985L79.0854 19.5929L79.0803 19.6258H80.999L82.597 11.4909C83.006 9.4049 84.5932 7.88996 86.3739 7.88996C86.7328 7.88131 87.0882 7.96143 87.4089 8.12327C87.7297 8.28511 88.0059 8.52371 88.2133 8.81805L88.2322 8.8421L89.7879 7.43415L89.7728 7.41516C89.4206 7.00234 88.9794 6.67558 88.4828 6.4597C87.9861 6.24383 87.447 6.1445 86.9064 6.16928ZM75.3318 6.33134H77.275L77.27 6.363L74.6588 19.6258H72.7678L72.7741 19.5929L73.0243 18.2128C72.5408 18.7377 71.9491 19.1504 71.2906 19.422C70.6321 19.6935 69.9226 19.8176 69.2114 19.7854C68.7188 19.8075 68.227 19.7247 67.7685 19.5423C67.31 19.3599 66.8951 19.0821 66.5511 18.727C66.2071 18.372 65.9418 17.9479 65.7726 17.4825C65.6033 17.0171 65.5341 16.521 65.5694 16.0268C65.5748 15.6225 65.6206 15.2198 65.7061 14.8246L65.7282 14.7043L67.3803 6.33134H69.2978L67.6677 14.5283C67.5904 14.9334 67.5468 15.3442 67.5372 15.7565C67.5127 16.0718 67.5576 16.3887 67.6687 16.6847C67.7798 16.9806 67.9545 17.2483 68.1802 17.4688C68.406 17.6892 68.6773 17.857 68.9749 17.9602C69.2724 18.0635 69.589 18.0995 69.902 18.0659C70.4219 18.0659 73.0457 17.8912 73.7306 14.4619L75.3318 6.33134Z"/></symbol>
+  <symbol id="logo-pdz" viewBox="3 4 98 50"><path fill-rule="evenodd" d="M81.58 19.00 81.17 19.50 80.92 20.42 80.83 21.17 80.25 22.42 80.08 23.33 79.83 23.92 79.83 24.67 80.08 25.00 80.42 25.17 81.25 25.25 81.83 25.08 82.25 24.83 82.58 24.50 83.00 23.42 83.67 22.50 84.58 21.67 85.83 21.08 86.83 20.92 86.92 20.83 87.50 20.83 87.58 20.75 90.58 20.67 90.67 20.75 91.25 20.83 91.58 21.17 91.67 21.58 91.33 22.17 90.33 23.42 89.92 24.17 89.08 25.17 88.83 25.67 87.67 27.25 87.33 27.58 86.67 28.75 84.42 31.75 83.58 33.08 82.17 35.00 81.83 35.67 81.08 36.50 80.83 37.00 80.25 37.67 79.83 38.42 79.25 39.08 78.67 40.08 77.75 41.33 77.33 41.75 76.75 42.75 76.67 43.42 77.25 43.67 78.17 43.67 78.25 43.58 80.92 43.58 81.00 43.50 84.25 43.50 84.33 43.42 84.92 43.42 85.00 43.50 85.83 43.50 85.92 43.42 89.17 43.42 89.25 43.50 92.17 43.50 92.25 43.58 92.67 43.58 92.75 43.50 94.33 43.50 94.42 43.58 96.75 43.58 96.83 43.67 97.25 43.67 97.67 43.50 98.00 43.08 98.42 41.92 98.42 41.67 98.67 41.00 98.92 39.42 99.67 37.42 99.58 36.75 99.25 36.42 99.00 36.42 98.92 36.33 98.75 36.42 98.25 36.42 97.50 36.75 97.25 37.00 96.58 38.42 95.25 39.83 94.33 40.42 93.25 40.92 92.08 41.08 92.00 41.17 91.00 41.25 90.92 41.33 90.50 41.33 90.42 41.42 86.58 41.42 86.33 41.33 86.00 40.92 86.00 40.33 86.17 40.00 86.58 39.58 87.00 38.92 87.58 38.25 88.08 37.42 88.67 36.75 89.17 35.92 89.75 35.25 89.92 34.83 90.58 34.00 91.08 33.08 93.58 29.75 94.17 28.67 94.67 28.08 95.25 27.17 95.67 26.75 96.08 26.00 96.67 25.33 97.00 24.67 97.75 23.75 99.08 21.67 100.00 20.42 100.50 19.92 100.75 19.42 100.67 19.08 100.25 18.75 94.75 18.83 94.67 18.92 88.67 18.92 88.58 18.83 83.42 18.83 83.33 18.75 82.58 18.75 82.50 18.83 82.00 18.83ZM30.67 20.08 28.92 19.17 28.08 18.92 27.75 18.92 26.83 18.67 26.33 18.67 26.25 18.58 23.33 18.58 23.25 18.67 22.42 18.67 22.33 18.75 21.25 18.83 20.00 19.17 19.58 19.42 18.75 19.67 17.50 20.33 17.00 20.33 16.75 20.08 16.67 19.58 16.50 19.25 16.08 18.92 12.58 18.83 12.25 19.00 11.92 19.33 11.67 19.92 11.58 20.58 11.25 21.50 11.00 23.50 10.83 23.92 10.83 24.25 10.75 24.33 10.75 24.67 10.67 24.75 10.50 25.67 10.17 26.67 10.08 27.67 9.83 28.58 9.75 29.42 9.25 31.00 8.92 33.25 8.58 34.33 8.42 35.42 8.17 36.08 7.92 38.08 7.25 40.33 7.17 41.17 7.08 41.25 6.92 42.50 6.83 42.58 6.75 43.50 6.33 44.75 6.33 45.17 6.25 45.25 6.25 45.67 6.17 45.75 5.83 47.75 5.17 50.08 5.08 51.08 4.83 51.92 4.83 52.58 5.08 52.83 5.42 53.00 8.83 53.00 9.42 52.75 9.67 52.50 9.92 51.67 10.00 50.58 10.58 48.75 10.83 47.00 10.92 46.92 10.92 46.50 11.00 46.42 11.00 46.08 11.25 45.17 11.25 44.75 11.75 43.08 11.92 41.67 12.17 41.08 12.50 40.83 12.83 40.83 13.17 41.00 14.92 42.58 17.25 43.50 18.33 43.58 18.42 43.67 19.42 43.67 19.50 43.75 21.67 43.75 21.75 43.67 23.17 43.50 23.25 43.42 24.17 43.25 24.67 43.00 25.58 42.75 26.25 42.42 26.67 42.08 27.33 41.75 29.42 39.75 30.08 38.67 30.75 37.83 31.08 37.17 31.08 37.00 31.67 36.00 31.67 35.75 31.83 35.42 32.00 34.67 32.50 33.67 32.75 32.83 32.92 31.42 33.00 31.33 33.00 31.00 33.08 30.92 33.08 30.58 33.33 29.67 33.42 28.33 33.50 28.25 33.42 25.25 32.83 23.00 31.92 21.42ZM26.42 23.25 27.67 24.33 28.08 25.08 28.42 26.33 28.50 27.50 28.42 27.58 28.42 28.75 28.33 28.83 28.25 30.08 28.17 30.17 28.00 31.33 27.83 31.75 27.83 32.08 27.58 32.67 27.50 33.17 27.00 34.25 26.75 35.17 25.83 36.58 25.42 37.08 24.75 37.58 24.08 38.25 23.42 38.67 22.33 39.08 22.08 39.08 20.67 39.50 20.17 39.50 20.08 39.58 17.92 39.58 17.83 39.50 17.33 39.50 16.67 39.25 16.42 39.25 15.42 38.83 14.17 37.58 13.92 37.08 13.83 36.33 13.75 36.25 13.75 35.75 13.67 35.67 13.67 34.67 13.75 34.58 13.75 33.67 13.83 33.58 13.83 32.83 13.92 32.75 14.00 31.75 14.08 31.67 14.25 30.75 14.58 29.92 14.83 28.42 15.08 27.83 15.58 27.17 16.08 26.08 16.42 25.58 18.08 23.92 18.67 23.58 20.42 22.92 21.25 22.83 21.33 22.75 21.92 22.75 22.00 22.67 23.42 22.58 23.50 22.67 24.25 22.67 24.33 22.75 25.42 22.83ZM64.33 9.42 63.92 9.25 60.67 9.17 60.17 9.33 59.67 9.92 59.42 10.67 59.42 11.00 59.08 12.25 58.92 13.83 58.25 16.25 57.67 19.75 57.42 20.67 57.25 21.00 56.92 21.33 56.67 21.42 56.25 21.33 55.25 20.25 54.17 19.58 53.08 19.08 51.58 18.83 51.50 18.75 51.08 18.75 51.00 18.67 50.50 18.67 50.42 18.58 47.25 18.67 47.17 18.75 46.67 18.75 46.58 18.83 46.17 18.83 46.08 18.92 45.67 18.92 45.58 19.00 45.00 19.08 42.92 20.00 41.42 21.08 40.00 22.50 39.33 23.33 38.17 25.42 38.00 26.08 37.17 27.67 37.00 28.17 36.75 29.83 36.17 31.75 36.08 32.75 36.00 32.83 36.00 33.75 35.92 33.83 35.92 36.67 36.08 37.17 36.17 38.33 36.33 38.83 36.58 39.17 37.33 40.75 38.75 42.17 39.50 42.67 40.83 43.25 41.92 43.58 42.92 43.67 43.00 43.75 45.83 43.75 45.92 43.67 47.33 43.67 47.42 43.58 47.75 43.58 50.42 42.75 51.17 42.25 52.00 41.92 52.50 42.00 52.83 42.50 53.00 43.17 53.17 43.33 53.58 43.50 54.50 43.42 54.58 43.33 54.83 43.42 55.58 43.42 55.67 43.50 56.50 43.50 57.08 43.33 57.50 42.92 57.75 42.33 57.92 41.00 58.08 40.50 58.08 40.08 58.75 37.83 58.92 36.25 59.17 35.42 59.25 34.58 59.67 33.25 60.00 31.17 60.50 29.50 60.50 29.17 60.58 29.08 60.58 28.75 60.67 28.67 60.67 28.33 60.92 27.42 61.08 26.00 61.67 24.25 61.67 23.83 61.75 23.75 61.75 23.33 61.83 23.25 61.83 22.83 61.92 22.75 61.92 22.33 62.08 21.83 62.25 20.50 62.67 19.50 62.92 17.42 63.83 14.00 64.08 11.83 64.58 10.58 64.58 9.75ZM53.42 23.17 54.50 23.92 55.00 24.42 55.25 24.92 55.75 26.58 55.75 28.33 55.67 28.42 55.58 29.33 55.08 31.25 55.00 32.17 54.75 33.08 54.17 34.25 53.92 35.33 53.58 35.92 52.50 37.25 51.83 37.92 50.33 38.92 49.67 39.17 48.67 39.33 48.25 39.50 47.92 39.50 47.83 39.58 47.33 39.58 47.25 39.67 45.00 39.67 44.92 39.58 44.50 39.58 42.50 38.83 42.08 38.50 41.75 38.00 41.00 36.50 41.00 36.17 40.92 36.08 40.92 33.42 41.00 33.33 41.00 32.58 41.08 32.50 41.17 31.67 41.83 29.75 42.00 28.58 42.42 27.67 42.75 27.25 42.75 27.08 43.17 26.25 44.33 24.83 45.08 24.17 47.00 23.17 47.75 22.92 48.00 22.92 48.08 22.83 49.50 22.83 49.58 22.75 51.33 22.75 51.42 22.83 52.67 22.92Z"/><rect x="69.4" y="5" width="2.2" height="48" opacity=".5"/></symbol>
 </svg>
 
 <header class="hero s-deep" id="top">
   <div class="wrap">
     <div class="hero-top">
-      <span class="label">ETH Zürich · Focus Project 2026/27</span>
-      <span class="label">pd|z Product Development Group Zurich</span>
+      <span class="label hero-eth"><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg><span>Focus Project 2026/27</span></span>
+      <span class="label hero-eth"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><span>Product Development Group Zurich</span></span>
     </div>
 
     <div class="wm-slot" id="wm-slot">
@@ -306,56 +320,79 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
     </div>
 
     <svg class="diagram" id="dg" data-intro="on" viewBox="100 400 1840 660" role="img" aria-label="Requirements such as range, speed, interception time and cost feed into the Boreas pipeline, which outputs an exploded interceptor design.">
-      <defs>
-        <clipPath id="cp-wires"><rect class="wire-clip" x="620" y="560" width="290" height="460"/></clipPath>
-      </defs>
+      <defs></defs>
       <g stroke="currentColor" fill="none">
-        <text class="type" x="135" y="523" font-size="19" letter-spacing="5" opacity=".6" stroke="none">INPUT / REQUIREMENTS</text>
-        <g class="slider" data-x="435" transform="translate(0,631)">
-          <text x="135" y="-22" font-size="23" stroke="none">range</text>
-          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
-          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
-          <line class="fill" x1="133" x2="435" stroke-width="4"/>
-          <g class="knob"><circle class="cap" cx="435" r="14" stroke-width="3.5"/><circle cx="435" r="4" fill="currentColor" stroke="none"/></g>
-        </g>
-        <g class="slider" data-x="519" data-via="406" transform="translate(0,738)">
-          <text x="135" y="-22" font-size="23" stroke="none">speed</text>
-          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
-          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
-          <circle class="ghost" cx="406" r="14" stroke-width="1.5" stroke-dasharray="3 4" opacity=".5"/>
-          <path class="arrow" d="M431 -25h64m-8 -6 8 6-8 6" stroke-width="1.5" opacity=".6"/>
-          <line class="fill" x1="133" x2="519" stroke-width="4"/>
-          <g class="knob"><circle class="cap" cx="519" r="14" stroke-width="3.5"/><circle cx="519" r="4" fill="currentColor" stroke="none"/></g>
-        </g>
-        <g class="slider" data-x="313" transform="translate(0,846)">
-          <text x="135" y="-22" font-size="23" stroke="none">interception time</text>
-          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
-          <line class="fill" x1="133" x2="313" stroke-width="4"/>
-          <g class="knob"><circle class="cap" cx="313" r="14" stroke-width="3.5"/><circle cx="313" r="4" fill="currentColor" stroke="none"/></g>
-        </g>
-        <g class="slider" data-x="378" transform="translate(0,953)">
-          <text x="135" y="-22" font-size="23" stroke="none">cost</text>
-          <line class="bg" x1="133" x2="605" stroke-width="3" opacity=".18"/>
-          <g class="ticks" opacity=".35" stroke-width="1.5"><line x1="133" x2="133" y1="12" y2="20"/><line x1="180" x2="180" y1="12" y2="20"/><line x1="227" x2="227" y1="12" y2="20"/><line x1="275" x2="275" y1="12" y2="20"/><line x1="322" x2="322" y1="12" y2="20"/><line x1="369" x2="369" y1="12" y2="20"/><line x1="416" x2="416" y1="12" y2="20"/><line x1="463" x2="463" y1="12" y2="20"/><line x1="511" x2="511" y1="12" y2="20"/><line x1="558" x2="558" y1="12" y2="20"/><line x1="605" x2="605" y1="12" y2="20"/></g>
-          <line class="fill" x1="133" x2="378" stroke-width="4"/>
-          <g class="knob"><circle class="cap" cx="378" r="14" stroke-width="3.5"/><circle cx="378" r="4" fill="currentColor" stroke="none"/></g>
-        </g>
-        <g clip-path="url(#cp-wires)">
-          <g stroke-width="2" stroke-dasharray="7 7" opacity=".55">
-            <path d="M632 631 C 700 631, 690 792, 750 792"/>
-            <path d="M632 738 C 690 738, 700 792, 750 792"/>
-            <path d="M632 846 C 690 846, 700 792, 750 792"/>
-            <path d="M632 953 C 700 953, 690 792, 750 792"/>
-            <path class="wire-out" d="M781 792 L 860 778"/>
+        <g class="panel">
+          <text x="135" y="532" font-size="14" letter-spacing="4" opacity=".55" stroke="none">01 · INPUT / REQUIREMENTS</text>
+          <line x1="135" x2="520" y1="552" y2="552" stroke-width="1" opacity=".28"/>
+          <g class="param" transform="translate(0 612)">
+            <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">RANGE</text>
+            <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">HIGH</text>
+            <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
+            <path d="M135.0 619v5M173.5 619v5M212.0 619v5M250.5 619v5M289.0 619v5M327.5 619v5M366.0 619v5M404.5 619v5M443.0 619v5M481.5 619v5M520.0 619v5" stroke-width="1" opacity=".28"/>
+            <line x1="135" x2="381.4" stroke-width="1.6" opacity=".9"/>
+            <rect class="cap" x="376.9" y="-4.5" width="9" height="9" transform="rotate(45 381.4 0)" stroke-width="1.6"/>
+            <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
           </g>
+          <g class="param" transform="translate(0 700)">
+            <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">SPEED</text>
+            <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">HIGH</text>
+            <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
+            <path d="M135.0 707v5M173.5 707v5M212.0 707v5M250.5 707v5M289.0 707v5M327.5 707v5M366.0 707v5M404.5 707v5M443.0 707v5M481.5 707v5M520.0 707v5" stroke-width="1" opacity=".28"/>
+            <line x1="135" x2="450.7" stroke-width="1.6" opacity=".9"/>
+            <rect class="cap" x="446.2" y="-4.5" width="9" height="9" transform="rotate(45 450.7 0)" stroke-width="1.6"/>
+            <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="param" transform="translate(0 788)">
+            <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">INTERCEPTION TIME</text>
+            <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">SHORT</text>
+            <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
+            <path d="M135.0 795v5M173.5 795v5M212.0 795v5M250.5 795v5M289.0 795v5M327.5 795v5M366.0 795v5M404.5 795v5M443.0 795v5M481.5 795v5M520.0 795v5" stroke-width="1" opacity=".28"/>
+            <line x1="135" x2="281.3" stroke-width="1.6" opacity=".9"/>
+            <rect class="cap" x="276.8" y="-4.5" width="9" height="9" transform="rotate(45 281.3 0)" stroke-width="1.6"/>
+            <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
+          </g>
+          <g class="param" transform="translate(0 876)">
+            <text x="135" y="-16" font-size="14" letter-spacing="3" opacity=".9" stroke="none">COST</text>
+            <text x="520" y="-16" font-size="13" letter-spacing="2" text-anchor="end" opacity=".5" stroke="none">MEDIUM</text>
+            <line x1="135" x2="520" stroke-width="1" opacity=".22"/>
+            <path d="M135.0 883v5M173.5 883v5M212.0 883v5M250.5 883v5M289.0 883v5M327.5 883v5M366.0 883v5M404.5 883v5M443.0 883v5M481.5 883v5M520.0 883v5" stroke-width="1" opacity=".28"/>
+            <line x1="135" x2="335.2" stroke-width="1.6" opacity=".9"/>
+            <rect class="cap" x="330.7" y="-4.5" width="9" height="9" transform="rotate(45 335.2 0)" stroke-width="1.6"/>
+            <circle cx="548" r="3.5" fill="currentColor" stroke="none"/>
+          </g>
+          <g stroke-width="1.2" opacity=".5">
+            <path d="M552 612 C 606 612, 592 703, 650 703"/>
+            <path d="M552 700 C 606 700, 592 729, 650 729"/>
+            <path d="M552 788 C 606 788, 592 755, 650 755"/>
+            <path d="M552 876 C 606 876, 592 781, 650 781"/>
+          </g>
+          <rect class="cap" x="650" y="625" width="240" height="240" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="703" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="729" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="755" r="3.5" stroke-width="1.2"/>
+          <circle class="cap" cx="650" cy="781" r="3.5" stroke-width="1.2"/>
+          <text x="670" y="655" font-size="12" letter-spacing="4" opacity=".55" stroke="none">02 · PIPELINE</text>
+          <text x="670" y="687" font-size="23" stroke="none" style="font-family: var(--f-display); font-weight: 300; letter-spacing: 0">Design automation</text>
+          <line x1="650" x2="890" y1="705" y2="705" stroke-width="1" opacity=".28"/>
+          <rect x="670" y="725" width="7" height="7" stroke-width="1" opacity=".7"/>
+          <text x="688" y="733" font-size="12" letter-spacing="2.5" opacity=".75" stroke="none">AERODYNAMICS</text>
+          <rect x="670" y="751" width="7" height="7" stroke-width="1" opacity=".7"/>
+          <text x="688" y="759" font-size="12" letter-spacing="2.5" opacity=".75" stroke="none">STRUCTURES</text>
+          <rect x="670" y="777" width="7" height="7" stroke-width="1" opacity=".7"/>
+          <text x="688" y="785" font-size="12" letter-spacing="2.5" opacity=".75" stroke="none">PROPULSION</text>
+          <rect x="670" y="803" width="7" height="7" stroke-width="1" opacity=".7"/>
+          <text x="688" y="811" font-size="12" letter-spacing="2.5" opacity=".75" stroke="none">ELECTRONICS</text>
+          <rect x="670" y="829" width="7" height="7" stroke-width="1" opacity=".7"/>
+          <text x="688" y="837" font-size="12" letter-spacing="2.5" opacity=".75" stroke="none">CONTROL</text>
+          <circle cx="890" cy="745" r="4.5" fill="currentColor" stroke="none"/>
         </g>
-        <g class="node">
-          <circle class="node-orbit" cx="765" cy="792" r="30" stroke-width="1.5" stroke-dasharray="4 6" opacity="0"/>
-          <circle class="cap" cx="765" cy="792" r="17" stroke-width="3.5"/><circle cx="765" cy="792" r="5" fill="currentColor" stroke="none"/>
+        <path class="wire-out" d="M894 745" stroke-width="1.2" opacity="0"/>
+        <circle class="wire-end" r="3.5" fill="currentColor" stroke="none" opacity="0"/>
+        <g class="out-label" opacity=".55" stroke="none">
+          <text x="1900" y="1012" font-size="14" letter-spacing="4" text-anchor="end">03 · OUTPUT</text>
+          <text x="1900" y="1038" font-size="14" letter-spacing="4" text-anchor="end">INTERCEPTOR DESIGN</text>
         </g>
-        <text class="type" x="765" y="846" font-size="18" letter-spacing="5" text-anchor="middle" opacity=".6" stroke="none">PIPELINE</text>
-        <text class="type" x="1900" y="1012" font-size="19" letter-spacing="5" text-anchor="end" opacity=".6" stroke="none">OUTPUT</text>
-        <text class="type" x="1900" y="1043" font-size="19" letter-spacing="5" text-anchor="end" opacity=".6" stroke="none">INTERCEPTOR DESIGN</text>
         <g id="drone" stroke-linejoin="round" stroke-linecap="round"></g>
         <g id="callouts"></g>
       </g>
@@ -376,37 +413,50 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 
 <script>
 /* Wordmark flight: #wm lives in a fixed layer; its slot in the hero keeps the layout.
-   Scroll progress p = how far the slot has travelled towards the header brand. */
+   The scroll position only sets a target progress; the logo follows it through a damped
+   spring in its own rAF loop, so wheel steps and the header's height change never make it jump. */
 (function () {
   var wm = document.getElementById('wm'), slot = document.getElementById('wm-slot'), brand = document.querySelector('.site-header .brand svg');
-  var head = document.getElementById('site-header');
   if (!wm || !slot || !brand) return;
   var fly = document.createElement('div'); fly.className = 'wm-fly'; fly.setAttribute('aria-hidden', 'true');
   document.body.appendChild(fly); fly.appendChild(wm);
   document.documentElement.classList.add('wm-flying');
   function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  var raf = 0, until = 0;
-  function update() {
-    raf = 0;
+  var x0 = 0, y0 = 0, w0 = 1, dist = 1, p = -1, raf = 0, last = 0, lastKey = '';
+  function measure() { // slot position at scroll 0 (document coordinates)
     var s = slot.getBoundingClientRect(), b = brand.getBoundingClientRect();
-    var dist = Math.max(1, s.top + scrollY - b.top, innerHeight * .5); // at least half a screen of scrolling
-    var e = ease(Math.min(1, Math.max(0, scrollY / dist)));
-    var x = s.left + (b.left - s.left) * e, y0 = Math.max(s.top, b.top), y = y0 + (b.top - y0) * e, k = 1 + (b.width / s.width - 1) * e;
-    fly.style.width = s.width + 'px';
-    fly.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + k.toFixed(4) + ')';
-    if (performance.now() < until) req(); // follow the header's height transition
+    x0 = s.left; y0 = s.top + scrollY; w0 = Math.max(1, s.width);
+    dist = Math.max(1, y0 - b.top, innerHeight * .5); // at least half a screen of scrolling
+    fly.style.width = w0 + 'px';
   }
-  function req() { if (!raf) raf = requestAnimationFrame(update); }
-  function follow() { until = performance.now() + 400; update(); }
-  addEventListener('scroll', follow, { passive: true });
-  addEventListener('resize', req);
-  if (window.ResizeObserver) { new ResizeObserver(req).observe(slot); new ResizeObserver(req).observe(brand); }
-  if (document.fonts) document.fonts.ready.then(req);
-  update();
+  function target() { return Math.min(1, Math.max(0, scrollY / dist)); }
+  function place() {
+    var b = brand.getBoundingClientRect(), e = ease(p);
+    var x = x0 + (b.left - x0) * e, y = y0 + (b.top - y0) * e, k = 1 + (b.width / w0 - 1) * e;
+    var key = x.toFixed(2) + ',' + y.toFixed(2) + ',' + k.toFixed(4);
+    if (key !== lastKey) { lastKey = key; fly.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) scale(' + k.toFixed(4) + ')'; }
+    return key;
+  }
+  function tick(now) {
+    raf = 0;
+    var dt = Math.min(64, now - (last || now)); last = now;
+    var P = target(), d = P - p;
+    p = Math.abs(d) < 1e-4 ? P : p + d * (1 - Math.exp(-dt / 110)); // ~110 ms time constant
+    var before = lastKey;
+    place();
+    if (p !== P || lastKey !== before) raf = requestAnimationFrame(tick); else last = 0; // keep going while moving (incl. header transition)
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+  function relayout() { measure(); if (p < 0) p = target(); place(); kick(); }
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', relayout);
+  if (window.ResizeObserver) new ResizeObserver(relayout).observe(slot);
+  if (document.fonts) document.fonts.ready.then(relayout);
+  relayout();
 })();
 </script>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
-<script type="module" src="assets/drone/hero3d.js"></script>
+<script type="module" src="assets/drone/hero3d.js?v=5"></script>
 <script>
 /* if the 3D module cannot load (offline CDN, no WebGL), fall back to the static PNG drawing */
 setTimeout(function () {
@@ -508,7 +558,7 @@ setTimeout(function () {
       <div class="aside"><p>Boreas is hosted by the Product Development Group Zurich (pd|z) at ETH Zürich and coached by members of last year's Focus Project Zephyr.</p></div>
     </div>
 
-    <div class="group-label"><span class="label">Supervisors</span><span class="label">pd|z · ETH Zürich</span></div>
+    <div class="group-label"><span class="label">Supervisors</span><span class="label hero-eth"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg></span></div>
     <div class="people three">
       <figure class="person"><img src="assets/people/meboldt.jpg" alt="Prof. Dr. Mirko Meboldt" loading="lazy">
         <figcaption class="meta"><h3>Prof. Dr. Mirko Meboldt</h3><span class="soft">Full Professor · Head of pd|z</span></figcaption>
@@ -554,8 +604,8 @@ setTimeout(function () {
     </div>
     <div class="backers">
       <span class="label">Hosted by</span>
-      <span>ETH Zürich</span>
-      <span>pd|z <em>Product Development Group Zurich</em></span>
+      <span class="bk-logo"><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg></span>
+      <span class="bk-logo"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><em>Product Development Group Zurich</em></span>
     </div>
   </div>
 </section>
@@ -570,11 +620,11 @@ setTimeout(function () {
         <dt>E-mail</dt><dd><a href="mailto:boreas@ethz.ch">boreas@ethz.ch</a></dd>
         <dt>Instagram</dt><dd><a href="https://www.instagram.com/boreas_eth/" target="_blank" rel="noopener">@boreas_eth</a></dd>
         <dt>Web</dt><dd>projectboreas.ch</dd>
-        <dt>Host</dt><dd>pd|z, ETH Zürich</dd>
+        <dt>Host</dt><dd><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg> <svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg></dd>
       </dl>
     </div>
     <div class="f-bot">
-      <span>© 2026 Boreas · ETH Zürich Focus Project</span>
+      <span>© 2026 Boreas · <svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg> Focus Project</span>
       <span>Made in Zürich</span>
     </div>
   </div>

@@ -92,7 +92,7 @@ async function boot() {
   window.__boreas3d = true;
   const fb = document.getElementById('drone'); if (fb) fb.textContent = ''; // drop the PNG fallback if it was shown
 
-  const S = 1 / man.scale, BEIGE = 0xf2ede3;
+  const S = 1 / man.scale, BEIGE = 0xf2ede3; // default ink; the live value is the page's --top-ink
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(18, 1, 10, 20000);
   const root = new THREE.Group(); scene.add(root);     // pose (tilt / pitch / yaw)
   const spin = new THREE.Group(); root.add(spin);      // master roll about the long axis
@@ -133,6 +133,15 @@ async function boot() {
   const clGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, -360), new THREE.Vector3(0, 0, 400)]);
   const clMat = new THREE.LineDashedMaterial({ color: BEIGE, transparent: true, opacity: 0, dashSize: 16, gapSize: 7, depthWrite: false });
   const cl = new THREE.Line(clGeo, clMat); cl.computeLineDistances(); cl.renderOrder = 3; root.add(cl);
+
+  /* ink follows the hero's colour (--top-ink), so the drawing stays legible on blue and on white */
+  window.__boreasInk = () => {
+    const c = getComputedStyle(document.documentElement).getPropertyValue('--top-ink').trim();
+    if (!c) return;
+    for (const k in mats) mats[k].color.set(c);
+    clMat.color.set(c);
+    if (!running && typeof render === 'function' && m) render(tNow);
+  };
 
   /* ---------- SVG overlay: callouts ---------- */
   const callG = document.getElementById('callouts');
@@ -308,6 +317,7 @@ async function boot() {
   window.__boreasRender = t => { stop(); tNow = t; render(t); };
   window.__boreasTune = { POSE0, POSE1, MOVES, CALLOUTS, refresh: () => { layoutKey = ''; render(tNow); } };
 
+  window.__boreasInk();
   measure(); computeFinal();
   let rz = 0;
   const relayout = () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { if (!running) render(tNow); }); };

@@ -268,13 +268,13 @@ async function boot() {
   }
 
   /* ---------- playback ---------- */
-  let raf = 0, iv = 0, t0 = 0, last = 0, running = false, started = false, tNow = intro ? 0 : END;
+  let lockY = 0, raf = 0, iv = 0, t0 = 0, last = 0, running = false, started = false, tNow = intro ? 0 : END;
   const now = () => performance.now();
   function stop() { running = false; cancelAnimationFrame(raf); clearInterval(iv); }
   function step() { const t = now() - t0; last = now(); tNow = Math.min(t, END); render(tNow); if (t >= END) stop(); }
   function frame() { if (!running) return; step(); if (running) raf = requestAnimationFrame(frame); }
   function play() {
-    stop(); started = running = true; t0 = last = now(); tNow = 0; render(0);
+    stop(); started = running = true; t0 = last = now(); tNow = 0; lockY = scrollY; render(0);
     raf = requestAnimationFrame(frame);
     iv = setInterval(() => { if (running && now() - last > 40) step(); }, 33);
   }
@@ -292,7 +292,18 @@ async function boot() {
   if (!intro) { render(END); return; }
   const replay = document.getElementById('replay');
   if (replay) { replay.hidden = false; replay.addEventListener('click', play); }
-  ['wheel', 'touchmove', 'keydown'].forEach(e => addEventListener(e, ev => { if (ev.target !== replay) skip(); }, { passive: true }));
+  // scroll lock while the intro runs, so nobody scrolls past it. Escape or an in-page link skips it.
+  const SCROLL_KEYS = new Set([' ', 'Spacebar', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End']);
+  const block = ev => { if (running && ev.cancelable) ev.preventDefault(); };
+  addEventListener('wheel', block, { passive: false });
+  addEventListener('touchmove', block, { passive: false });
+  addEventListener('keydown', ev => {
+    if (!running) return;
+    if (ev.key === 'Escape') skip();
+    else if (SCROLL_KEYS.has(ev.key) && !/^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(ev.target.tagName)) ev.preventDefault();
+  });
+  addEventListener('scroll', () => { if (running && Math.abs(scrollY - lockY) > 1) scrollTo({ top: lockY, behavior: 'instant' }); }, { passive: true }); // scrollbar drag
+  document.addEventListener('click', ev => { if (running && ev.target.closest && ev.target.closest('a[href^="#"]')) skip(); });
   render(0);
   function tryStart() {
     if (started || document.visibilityState !== 'visible') return;

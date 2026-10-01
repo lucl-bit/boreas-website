@@ -152,7 +152,7 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
 
 /* Wordmark flight: the big hero wordmark shrinks and travels into the header while scrolling */
 .wm-slot { aspect-ratio: 489 / 56; }
-.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; color: var(--beige); }
+.wm-fly { position: fixed; left: 0; top: 0; z-index: 21; pointer-events: none; transform-origin: 0 0; will-change: transform; backface-visibility: hidden; color: var(--beige); }
 .wm-fly .wordmark { display: block; width: 100%; height: auto; }
 .wm-flying .site-header .brand svg { opacity: 0; }
 body:has(.mobile-nav.is-open) .wm-fly { opacity: 0; }
@@ -404,33 +404,46 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 
 <script>
 /* Wordmark flight: #wm lives in a fixed layer; its slot in the hero keeps the layout.
-   Scroll progress p = how far the slot has travelled towards the header brand. */
+   The scroll position only sets a target progress; the logo follows it through a damped
+   spring in its own rAF loop, so wheel steps and the header's height change never make it jump. */
 (function () {
   var wm = document.getElementById('wm'), slot = document.getElementById('wm-slot'), brand = document.querySelector('.site-header .brand svg');
-  var head = document.getElementById('site-header');
   if (!wm || !slot || !brand) return;
   var fly = document.createElement('div'); fly.className = 'wm-fly'; fly.setAttribute('aria-hidden', 'true');
   document.body.appendChild(fly); fly.appendChild(wm);
   document.documentElement.classList.add('wm-flying');
   function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-  var raf = 0, until = 0;
-  function update() {
-    raf = 0;
+  var x0 = 0, y0 = 0, w0 = 1, dist = 1, p = -1, raf = 0, last = 0, lastKey = '';
+  function measure() { // slot position at scroll 0 (document coordinates)
     var s = slot.getBoundingClientRect(), b = brand.getBoundingClientRect();
-    var dist = Math.max(1, s.top + scrollY - b.top, innerHeight * .5); // at least half a screen of scrolling
-    var e = ease(Math.min(1, Math.max(0, scrollY / dist)));
-    var x = s.left + (b.left - s.left) * e, y0 = Math.max(s.top, b.top), y = y0 + (b.top - y0) * e, k = 1 + (b.width / s.width - 1) * e;
-    fly.style.width = s.width + 'px';
-    fly.style.transform = 'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) scale(' + k.toFixed(4) + ')';
-    if (performance.now() < until) req(); // follow the header's height transition
+    x0 = s.left; y0 = s.top + scrollY; w0 = Math.max(1, s.width);
+    dist = Math.max(1, y0 - b.top, innerHeight * .5); // at least half a screen of scrolling
+    fly.style.width = w0 + 'px';
   }
-  function req() { if (!raf) raf = requestAnimationFrame(update); }
-  function follow() { until = performance.now() + 400; update(); }
-  addEventListener('scroll', follow, { passive: true });
-  addEventListener('resize', req);
-  if (window.ResizeObserver) { new ResizeObserver(req).observe(slot); new ResizeObserver(req).observe(brand); }
-  if (document.fonts) document.fonts.ready.then(req);
-  update();
+  function target() { return Math.min(1, Math.max(0, scrollY / dist)); }
+  function place() {
+    var b = brand.getBoundingClientRect(), e = ease(p);
+    var x = x0 + (b.left - x0) * e, y = y0 + (b.top - y0) * e, k = 1 + (b.width / w0 - 1) * e;
+    var key = x.toFixed(2) + ',' + y.toFixed(2) + ',' + k.toFixed(4);
+    if (key !== lastKey) { lastKey = key; fly.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) scale(' + k.toFixed(4) + ')'; }
+    return key;
+  }
+  function tick(now) {
+    raf = 0;
+    var dt = Math.min(64, now - (last || now)); last = now;
+    var P = target(), d = P - p;
+    p = Math.abs(d) < 1e-4 ? P : p + d * (1 - Math.exp(-dt / 110)); // ~110 ms time constant
+    var before = lastKey;
+    place();
+    if (p !== P || lastKey !== before) raf = requestAnimationFrame(tick); else last = 0; // keep going while moving (incl. header transition)
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+  function relayout() { measure(); if (p < 0) p = target(); place(); kick(); }
+  addEventListener('scroll', kick, { passive: true });
+  addEventListener('resize', relayout);
+  if (window.ResizeObserver) new ResizeObserver(relayout).observe(slot);
+  if (document.fonts) document.fonts.ready.then(relayout);
+  relayout();
 })();
 </script>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>

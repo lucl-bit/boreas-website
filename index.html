@@ -75,11 +75,11 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
   display: grid; grid-template-columns: 1fr minmax(140px, 190px) 1fr; align-items: center; column-gap: var(--s3);
   min-height: var(--head-h); padding-inline: var(--gutter);
-  color: var(--top-ink); background: var(--top-bg); border-bottom: 1px solid transparent;
-  transition: border-color .25s var(--ease), min-height .25s var(--ease), margin-bottom .25s var(--ease), background-color .25s var(--ease);
+  color: var(--top-ink); background: var(--top-bg); transition: min-height .25s var(--ease), margin-bottom .25s var(--ease);
 }
 /* shrinks visually; the margin keeps its footprint, so the page below never jumps */
-.site-header.is-scrolled { border-bottom-color: var(--top-rule); min-height: var(--head-h-s); margin-bottom: calc(var(--head-h) - var(--head-h-s)); background: var(--top-glass); backdrop-filter: blur(12px); }
+/* same solid colour as the hero at all times: no rule, no see-through glass while scrolling */
+.site-header.is-scrolled { min-height: var(--head-h-s); margin-bottom: calc(var(--head-h) - var(--head-h-s)); }
 .brand { justify-self: center; display: block; width: 100%; color: var(--top-ink); }
 .brand svg { display: block; width: 100%; height: auto; }
 .nav-side { display: flex; gap: clamp(16px, 2.6vw, 44px); align-items: center; }

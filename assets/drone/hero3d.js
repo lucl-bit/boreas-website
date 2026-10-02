@@ -167,6 +167,11 @@ async function boot() {
   const OUT = [894, 745]; // pipeline output port (SVG units)
   const letters = wm ? [...wm.querySelectorAll('path')] : [];
   const draw = (n, k) => n.setAttribute('stroke-dashoffset', (1 - k).toFixed(3));
+  // requirement sliders: value line + diamond knob run from 0 to their set value
+  const sliders = [...svg.querySelectorAll('.param')].map(g => {
+    const line = g.querySelector('line[stroke-width="1.6"]'), knob = g.querySelector('rect.cap');
+    return { line, knob, x0: +line.getAttribute('x1'), x1: +line.getAttribute('x2'), rot: knob.getAttribute('transform') };
+  });
 
   /* ---------- geometry helpers: SVG units <-> canvas pixels ---------- */
   let W = 1, H = 1, m = null, heroRect = null;
@@ -268,6 +273,11 @@ async function boot() {
 
     // panel stays still; it only fades in once the big drone has cleared the left side
     if (panel) panel.setAttribute('opacity', eIO(seg(t, 2300, 1300)).toFixed(3));
+    sliders.forEach((sl, i) => {
+      const x = lerp(sl.x0, sl.x1, eIO(seg(t, 2700 + i * 150, 1300)));
+      sl.line.setAttribute('x2', x.toFixed(1));
+      sl.knob.setAttribute('transform', 'translate(' + (x - sl.x1).toFixed(1) + ' 0) ' + sl.rot);
+    });
     // output link: soft S-curve from the pipeline's output port to the exhaust of the settled drone
     const tx = tailTip[0] - 10, ty = tailTip[1], dx = Math.max(60, tx - OUT[0]);
     wireOut.setAttribute('d', 'M' + OUT[0] + ' ' + OUT[1] + 'C' + (OUT[0] + dx * .5).toFixed(1) + ' ' + OUT[1] + ' ' + (tx - dx * .5).toFixed(1) + ' ' + ty.toFixed(1) + ' ' + tx.toFixed(1) + ' ' + ty.toFixed(1));

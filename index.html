@@ -75,11 +75,11 @@ section, header.hero { background-color: var(--bg); color: var(--body); }
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
   display: grid; grid-template-columns: 1fr minmax(140px, 190px) 1fr; align-items: center; column-gap: var(--s3);
   min-height: var(--head-h); padding-inline: var(--gutter);
-  color: var(--top-ink); background: var(--top-bg); border-bottom: 1px solid var(--top-rule);
-  transition: min-height .25s var(--ease), margin-bottom .25s var(--ease), background-color .25s var(--ease);
+  color: var(--top-ink); background: var(--top-bg); border-bottom: 1px solid transparent;
+  transition: border-color .25s var(--ease), min-height .25s var(--ease), margin-bottom .25s var(--ease), background-color .25s var(--ease);
 }
 /* shrinks visually; the margin keeps its footprint, so the page below never jumps */
-.site-header.is-scrolled { min-height: var(--head-h-s); margin-bottom: calc(var(--head-h) - var(--head-h-s)); background: var(--top-glass); backdrop-filter: blur(12px); }
+.site-header.is-scrolled { border-bottom-color: var(--top-rule); min-height: var(--head-h-s); margin-bottom: calc(var(--head-h) - var(--head-h-s)); background: var(--top-glass); backdrop-filter: blur(12px); }
 .brand { justify-self: center; display: block; width: 100%; color: var(--top-ink); }
 .brand svg { display: block; width: 100%; height: auto; }
 .nav-side { display: flex; gap: clamp(16px, 2.6vw, 44px); align-items: center; }
@@ -460,7 +460,7 @@ footer .wrap { padding-block: var(--s12) var(--s6); display: grid; gap: var(--s8
 })();
 </script>
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
-<script type="module" src="assets/drone/hero3d.js?v=5"></script>
+<script type="module" src="assets/drone/hero3d.js?v=6"></script>
 <script>
 /* if the 3D module cannot load (offline CDN, no WebGL), fall back to the static PNG drawing */
 setTimeout(function () {
@@ -557,25 +557,9 @@ setTimeout(function () {
 <section id="supervisors" class="s-beige">
   <div class="wrap">
     <div class="sec-head">
-      <span class="label">Supervisors &amp; Coaches</span>
+      <span class="label">Coaches &amp; Supervisors</span>
       <h2>Guided by <span>experience.</span></h2>
       <div class="aside"><p>Boreas is hosted by the Product Development Group Zurich (pd|z) at ETH Zürich and coached by members of last year's Focus Project Zephyr.</p></div>
-    </div>
-
-    <div class="group-label"><span class="label">Supervisors</span><span class="label hero-eth"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg></span></div>
-    <div class="people three">
-      <figure class="person"><img src="assets/people/meboldt.jpg" alt="Prof. Dr. Mirko Meboldt" loading="lazy">
-        <figcaption class="meta"><h3>Prof. Dr. Mirko Meboldt</h3><span class="soft">Full Professor · Head of pd|z</span></figcaption>
-        <p class="bio">Chair of Product Development and Engineering Design at ETH Zürich since 2012. Before that he led global CAD/PDM and technology development processes at Hilti. His research covers user-oriented product innovation and new production technologies.</p>
-      </figure>
-      <figure class="person"><img src="assets/people/zander.jpg" alt="Mark Zander" loading="lazy">
-        <figcaption class="meta"><h3>Mark Zander</h3><span class="soft">Head of Research Group · pd|z</span></figcaption>
-        <p class="bio">Leads the research group Design for New Technologies. He studies what makes development teams successful, how design methods influence that success, and how to assess project-based teamwork.</p>
-      </figure>
-      <figure class="person"><img src="assets/people/buerkli.jpg" alt="Julian Bürkli" loading="lazy">
-        <figcaption class="meta"><h3>Julian Bürkli</h3><span class="soft">Researcher · pd|z</span></figcaption>
-        <p class="bio">Works on additively manufactured shape memory alloy mechanisms and design automation, with a background in composite materials and lightweight structures.</p>
-      </figure>
     </div>
 
     <div class="group-label"><span class="label">Coaches</span><span class="label">Project Zephyr · Focus Project 2025/26</span></div>
@@ -591,6 +575,22 @@ setTimeout(function () {
       <figure class="person"><img src="assets/people/girgis.jpg" alt="David Girgis" loading="lazy">
         <figcaption class="meta"><h3>David Girgis</h3><span class="soft">Student Coach</span></figcaption>
         <p class="bio">Developed the vehicle control unit (VCU) at Project Zephyr. Supports Boreas on electronics and onboard control.</p>
+      </figure>
+    </div>
+
+    <div class="group-label"><span class="label">Supervisors</span><span class="label hero-eth"><svg class="pdz-logo" viewBox="3 4 98 50" fill="currentColor" role="img" aria-label="pd|z"><use href="#logo-pdz"/></svg><svg class="eth-logo" viewBox="0 0 120 20" fill="currentColor" role="img" aria-label="ETH Zürich"><use href="#logo-eth"/></svg></span></div>
+    <div class="people three">
+      <figure class="person"><img src="assets/people/meboldt.jpg" alt="Prof. Dr. Mirko Meboldt" loading="lazy">
+        <figcaption class="meta"><h3>Prof. Dr. Mirko Meboldt</h3><span class="soft">Full Professor · Head of pd|z</span></figcaption>
+        <p class="bio">Chair of Product Development and Engineering Design at ETH Zürich since 2012. Before that he led global CAD/PDM and technology development processes at Hilti. His research covers user-oriented product innovation and new production technologies.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/zander.jpg" alt="Mark Zander" loading="lazy">
+        <figcaption class="meta"><h3>Mark Zander</h3><span class="soft">Head of Research Group · pd|z</span></figcaption>
+        <p class="bio">Leads the research group Design for New Technologies. He studies what makes development teams successful, how design methods influence that success, and how to assess project-based teamwork.</p>
+      </figure>
+      <figure class="person"><img src="assets/people/buerkli.jpg" alt="Julian Bürkli" loading="lazy">
+        <figcaption class="meta"><h3>Julian Bürkli</h3><span class="soft">Researcher · pd|z</span></figcaption>
+        <p class="bio">Works on additively manufactured shape memory alloy mechanisms and design automation, with a background in composite materials and lightweight structures.</p>
       </figure>
     </div>
   </div>
